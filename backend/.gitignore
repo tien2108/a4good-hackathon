@@ -22,3 +22,7 @@ pnpm-debug.log*
 
 # Ignore env.txt files
 .env.txt
+
+# Ignore generated report exports
+src/public/exports/*.pdf
+src/public/exports/*.pptx

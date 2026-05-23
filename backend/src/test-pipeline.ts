@@ -76,6 +76,24 @@ async function runTest() {
     };
     fs.writeFileSync(outPath, JSON.stringify(seedSession, null, 2));
     console.log(`Saved default session state to ${outPath}`);
+
+    // Trigger Emailer integration test
+    const pdfPath = path.join(process.cwd(), "src", "public", "exports", `report-${sessionId}.pdf`);
+    const pptxPath = path.join(process.cwd(), "src", "public", "exports", `briefing-${sessionId}.pptx`);
+
+    console.log("\n=== TRIGGERING EMAIL DISPATCH INTEGRATION ===");
+    bus.publish({
+      id: `test-email-${Date.now()}`,
+      timestamp: new Date().toISOString(),
+      sender: "User",
+      recipient: "Emailer",
+      type: "EMAIL_REPORT",
+      content: "Request email dispatch of reports to your-email@example.com",
+      data: { sessionId, email: "your-email@example.com", pdfPath, pptxPath },
+    });
+
+    // Wait 2.5 seconds for Emailer agent simulation or actual delivery to finish
+    await new Promise(resolve => setTimeout(resolve, 2500));
   } else {
     console.log("❌ Error: humanizedSummary is null!");
   }

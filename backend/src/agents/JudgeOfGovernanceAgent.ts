@@ -49,7 +49,7 @@ export class JudgeOfGovernanceAgent extends BaseAgent {
       this.log(`Input JSON parsed for JudgeOfGovernance:\n` + JSON.stringify(inputJSON, null, 2), { sessionId });
 
       // 2. Generate the governance data using the required inputs and scenario context
-      const govData = this.generateGovernanceJSON(inputJSON, scenario, attemptCount, uploadedDocs);
+      const govData = await this.generateGovernanceJSON(inputJSON, scenario, attemptCount, uploadedDocs, sessionId);
 
       this.bus.updateSession(sessionId, (s) => {
         s.governanceData = govData;
@@ -66,12 +66,13 @@ export class JudgeOfGovernanceAgent extends BaseAgent {
     }
   }
 
-  private generateGovernanceJSON(
+  private async generateGovernanceJSON(
     input: JudgeOfGovernanceInput,
     scenario: string,
     attemptCount: number,
-    uploadedDocs: string[]
-  ): GovernanceData {
+    uploadedDocs: string[],
+    sessionId: string
+  ): Promise<GovernanceData> {
     // Rule 2 of her Python script: If it is NOT an AI system, set all JSON values to "N/A - Not an AI system".
     if (!input.appearsToMeetAiSystemDefinition) {
       return {
@@ -84,6 +85,102 @@ export class JudgeOfGovernanceAgent extends BaseAgent {
         accountability: "N/A - Not an AI system",
         roleClarity: "N/A - Not an AI system",
       };
+    }
+
+    // Attempt to call Verda Llama LLM if configured
+    const apiKey = process.env.VERDA_API_KEY;
+    const baseUrl = process.env.VERDA_BASE_LLAMA_URL;
+
+    const isConfigured = 
+      apiKey && 
+      baseUrl && 
+      apiKey !== "your_verda_api_key_here" && 
+      baseUrl !== "your_verda_base_llama_url_here";
+
+    if (isConfigured) {
+      try {
+        this.log(`Querying Verda meta-llama/Llama-3.1-8B-Instruct LLM for advanced governance audit notes...`, { sessionId });
+
+
+        const systemPrompt = `
+You are the 'Judge of Governance', an expert AI Act legal auditor. Your task is to analyze the system's compliance status and generate specific practical notes on governance.
+
+You must return ONLY a valid JSON object matching this exact structure:
+{
+  "documentation": "Detailed practical notes on logs, technical files, and lifecycle files.",
+  "riskManagement": "Detailed practical notes on hazard logs, mitigations, and systemic risks.",
+  "transparency": "Detailed practical notes on instruction manuals, disclosure footers, and labeling.",
+  "humanOversight": "Detailed practical notes on human overrides, clinical reviewers, and HR intervention gates.",
+  "monitoring": "Detailed practical notes on accuracy monitors, data drift, and runtime metrics.",
+  "logging": "Detailed practical notes on automatic event captures, input recording, and audit trails.",
+  "accountability": "Detailed practical notes on compliance officers, external safety audits, and officer roles.",
+  "roleClarity": "Detailed practical notes on who is the legal deployer, provider, importer, or distributor."
+}
+
+RULES:
+1. First, read the input describing the AI system's compliance status.
+2. Based on the system's risk classification and transparency obligations, refer to the EU AI Act and generate detailed, professional, and practical governance notes for each of the 8 fields.
+3. Make sure the notes are highly professional and directly relevant to the risk level (e.g. High-Risk needs extensive notes, Limited Risk needs lighter transparency notes).
+`;
+
+        const userPrompt = `
+Analyze the following system compliance parameters and generate your governance audit notes:
+
+- Appears to meet AI Act definition of an AI system: ${input.appearsToMeetAiSystemDefinition ? "Yes" : "No"}
+- Possible risk classification: ${input.possibleRiskClassification}
+- Transparency / labeling obligations: ${input.transparencyObligations.join(", ") || "None specified."}
+${uploadedDocs.length > 0 ? `- User-uploaded technical documents present: ${uploadedDocs.join(", ")}` : ""}
+
+Return ONLY the completed JSON object with the exact keys "documentation", "riskManagement", "transparency", "humanOversight", "monitoring", "logging", "accountability", and "roleClarity". Do not include any markdown fences or explanatory text.
+`;
+
+        const response = await fetch(`${baseUrl}/chat/completions`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${apiKey}`
+          },
+          body: JSON.stringify({
+            model: "meta-llama/Llama-3.1-8B-Instruct",
+            messages: [
+              { role: "system", content: systemPrompt },
+              { role: "user", content: userPrompt }
+            ],
+            temperature: 0.1,
+            response_format: { type: "json_object" }
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`Verda API returned status ${response.status}: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        const jsonText = data.choices?.[0]?.message?.content;
+        
+        if (jsonText) {
+          const parsed = JSON.parse(jsonText);
+          
+          // Verify that we got the keys we wanted (use fallback for any missing key)
+          const finalGov: GovernanceData = {
+            documentation: parsed.documentation || parsed.documentation_notes || "N/A",
+            riskManagement: parsed.riskManagement || parsed.risk_management || "N/A",
+            transparency: parsed.transparency || parsed.transparency_notes || "N/A",
+            humanOversight: parsed.humanOversight || parsed.human_oversight || "N/A",
+            monitoring: parsed.monitoring || parsed.monitoring_notes || "N/A",
+            logging: parsed.logging || parsed.logging_notes || "N/A",
+            accountability: parsed.accountability || parsed.accountability_notes || "N/A",
+            roleClarity: parsed.roleClarity || parsed.role_clarity || "N/A"
+          };
+
+          this.log(`🎉 Successfully received and parsed audit notes from Verda Llama LLM!`, { sessionId });
+          return finalGov;
+        }
+      } catch (err: any) {
+        this.log(`⚠️ Verda Llama LLM query failed: ${err.message}. Falling back to reliable simulation data.`, { sessionId });
+      }
+    } else {
+      this.log(`💡 Verda Llama LLM not fully configured in .env (using fallback simulation data).`, { sessionId });
     }
 
     // Check if the user uploaded documents that solve missing fields
