@@ -5,3 +5,6 @@ pydantic
 openai
 numpy
 python-dotenv
+fastapi
+uvicorn
+python-multipart

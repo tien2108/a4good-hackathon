@@ -1,67 +1,69 @@
-from extract_pdf import extract_pdf_text
-from chunking import chunk_pages
-from embeddings import embed_text
-from vector_store import VectorStore
-from retrieval import retrieve_chunks
-from llm_extract import extract_fact
-from classification_agent import classify_risk, validate_facts_for_classification
+from app.extract_pdf import extract_pdf_text
+from app.chunking import chunk_pages
+from app.embeddings import embed_text
+from app.vector_store import VectorStore
+from app.retrieval import retrieve_chunks
+from app.llm_extract import extract_fact
+from app.classification_agent import classify_risk, validate_facts_for_classification
+import tempfile
 import os
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 FIELDS = [
-"purpose", "users", "affected persons", "sector", "input data", "outputs", "automation level", "human oversight", "deployment context", "use of AI-generated content", "use of GPAI", "possible impact on people"
+    "purpose", "users", "affected persons", "sector", "input data",
+    "outputs", "automation level", "human oversight", "deployment context",
+    "use of AI-generated content", "use of GPAI", "possible impact on people"
 ]
 
-pdf_path = os.path.join(BASE_DIR, "data/pdfs/Migration, Asylum, and Border Control Management Systems.pdf")
+def run_pipeline(file_bytes: bytes) -> dict:
+    # Step 1: Save bytes to a temp file (extract_pdf_text expects a path)
+    with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmp:
+        tmp.write(file_bytes)
+        tmp_path = tmp.name
 
-pages = extract_pdf_text(pdf_path)
-chunks = chunk_pages(pages)
+    try:
+        # Step 2: Extract
+        pages = extract_pdf_text(tmp_path)
 
-first_embedding = embed_text(chunks[0]["text"])
-dim = len(first_embedding)
+        # Step 3: Chunk
+        chunks = chunk_pages(pages)
+        if not chunks:
+            return {"error": "No content could be extracted from the PDF."}
 
-vector_store = VectorStore(dim)
+        # Step 4: Embed + build vector store
+        first_embedding = embed_text(chunks[0]["text"])
+        dim = len(first_embedding)
+        vector_store = VectorStore(dim)
 
-for chunk in chunks:
-    embedding = embed_text(chunk["text"])
-    vector_store.add(embedding, chunk)
+        for chunk in chunks:
+            embedding = embed_text(chunk["text"])
+            vector_store.add(embedding, chunk)
 
-results = {}
+        # Step 5: Retrieve + extract fields
+        results = {}
+        for field in FIELDS:
+            relevant_chunks = retrieve_chunks(vector_store, field)
+            results[field] = extract_fact(field, relevant_chunks)
 
-for field in FIELDS:
-    relevant_chunks = retrieve_chunks(vector_store, field)
-    extraction = extract_fact(field, relevant_chunks)
-    results[field] = extraction
+        # Step 6: Validate
+        validation = validate_facts_for_classification(results)
 
-# Validate before classifying
-validation = validate_facts_for_classification(results)
+        if not validation["can_classify"]:
+            return {
+                "status": "aborted",
+                "reason": "Insufficient evidence for classification.",
+                "validation": validation,
+                "extracted_fields": results,
+            }
 
-print("=== Pre-classification Validation ===")
-print(f"Can Classify             : {validation['can_classify']}")
-print(f"Avg Extraction Confidence: {validation['avg_extraction_confidence']}")
+        # Step 7: Classify
+        classification = classify_risk(results)
 
-if validation["missing_fields"]:
-    print(f"Missing Fields           : {', '.join(validation['missing_fields'])}")
+        return {
+            "status": "success",
+            "validation": validation,
+            "extracted_fields": results,
+            "classification": classification,
+        }
 
-if validation["low_confidence_fields"]:
-    print("Low Confidence Fields:")
-    for f in validation["low_confidence_fields"]:
-        print(f"  - {f['field']}: {f['confidence']} → '{f['value']}'")
-
-if validation["steps_at_risk"]:
-    print("Decision Steps at Risk:")
-    for step, fields in validation["steps_at_risk"].items():
-        print(f"  - {step} lacks evidence for: {', '.join(fields)}")
-
-if not validation["can_classify"]:
-    print("\nClassification aborted: insufficient evidence.")
-else:
-    if validation["warning"]:
-        print(f"\n[WARN] {validation['warning']}")
-
-    classification = classify_risk(results)
-    certainty = classification["classification_certainty"]
-
-    print("\n=== Risk Classification Result ===")
-    print(classification)
+    finally:
+        os.remove(tmp_path)  # always clean up temp file

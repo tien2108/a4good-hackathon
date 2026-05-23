@@ -1,7 +1,7 @@
 # classification_agent.py
 
 from openai import OpenAI
-from risk_classifier import DECISION_TREE, RISK_OUTCOMES
+from app.risk_classifier import DECISION_TREE, RISK_OUTCOMES
 import json
 import re
 import os
@@ -35,7 +35,7 @@ REQUIRED_FIELDS_FOR_CLASSIFICATION = {
 
 ARTICLE_CONTEXT = {
     "step_1": """
-Art 2 — Scope:
+Article 2 — Scope:
 The AI Act applies to:
 - Providers placing AI systems on the EU market
 - Deployers of AI systems located in the EU
@@ -44,14 +44,14 @@ The AI Act applies to:
 Exceptions (out of scope): AI for military, national security, personal non-professional use, pure R&D.
 """,
     "step_2": """
-Art 25.1 — Change of role (deployer becomes provider):
+Article 25.1 — Change of role (deployer becomes provider):
 A deployer is considered a provider when they:
 - Place the AI system under their own name or trademark
 - Make a substantial modification to a high-risk AI system
 - Change the intended purpose of a system to make it high-risk
 """,
     "step_2a": """
-Art 5 — Prohibited AI Practices:
+Article 5 — Prohibited AI Practices:
 The following AI systems are prohibited:
 - Subliminal, manipulative, or deceptive techniques that distort behavior
 - Exploitation of vulnerabilities of specific groups (age, disability, social situation)
@@ -63,7 +63,7 @@ The following AI systems are prohibited:
 - Untargeted scraping of facial images from internet/CCTV
 """,
     "step_3": """
-Art 5 — Prohibited AI Practices:
+Article 5 — Prohibited AI Practices:
 The following AI systems are prohibited:
 - Subliminal, manipulative, or deceptive techniques that distort behavior
 - Exploitation of vulnerabilities of specific groups (age, disability, social situation)
@@ -75,7 +75,7 @@ The following AI systems are prohibited:
 - Untargeted scraping of facial images from internet/CCTV
 """,
     "step_4": """
-Art 6.1 — High-Risk AI Systems (Annex III categories):
+Article 6.1 — High-Risk AI Systems (Annex III categories):
 A system is high-risk if used in:
 1. Biometric identification and categorisation
 2. Management of critical infrastructure (water, gas, electricity, transport)
@@ -87,7 +87,7 @@ A system is high-risk if used in:
 8. Administration of justice and democratic processes
 """,
     "step_5": """
-Art 6.3 — Exemption from High-Risk Classification:
+Article 6.3 — Exemption from High-Risk Classification:
 A system is NOT high-risk if:
 - It does not pose significant risk of harm to health, safety, or fundamental rights
 - It only performs a narrow procedural task
@@ -95,55 +95,55 @@ A system is NOT high-risk if:
 - It detects patterns/anomalies and is not used to make decisions about people
 """,
     "step_5a": """
-Art 16-22, Art 72, Art 99.4a/b — Provider/Provider's Representative obligations:
+Article 16-22, Article 72, Article 99.4a/b — Provider/Provider's Representative obligations:
 A user is a provider or provider's representative if they:
 - Developed or placed the AI system on the market under their name
 - Are the authorised representative of a non-EU provider
 """,
     "step_5b": """
-Art 23, Art 99.4c — Importer obligations:
+Article 23, Article 99.4c — Importer obligations:
 A user is an importer if they:
 - Are established in the EU and place a third-country provider's AI system on the EU market
 """,
     "step_5c": """
-Art 24, Art 99.4d — Distributor obligations:
+Article 24, Article 99.4d — Distributor obligations:
 A user is a distributor if they:
 - Make an AI system available on the EU market without being the provider or importer
 """,
     "step_5d": """
-Art 26, Art 99.4e — Deployer obligations:
+Article 26, Article 99.4e — Deployer obligations:
 A user is a deployer if they:
 - Use an AI system under their authority in a professional context
 - Are not the provider, importer, or distributor of the system
 """,
     "step_5e": """
-Art 27 — Public body or company providing public services:
+Article 27 — Public body or company providing public services:
 This applies if the deployer is:
 - A public authority or body
 - A private company mandated to provide public services (utilities, transport, healthcare)
 """,
     "step_6": """
-Art 50 — Transparency obligations:
-A system falls under Art 50 if it is:
+Article 50 — Transparency obligations:
+A system falls under Article 50 if it is:
 - A chatbot or conversational AI interacting with humans
 - A system generating synthetic audio, image, video, or text (deepfakes)
 - An emotion recognition system
 - A biometric categorisation system
-These systems must disclose their AI nature to users. Fine details in Art 99.4g.
+These systems must disclose their AI nature to users. Fine details in Article 99.4g.
 """,
     "step_7": """
-Art 51 — GPAI Model Classification:
+Article 51 — GPAI Model Classification:
 A model is GPAI (General Purpose AI) if it:
 - Is trained on broad data at scale
 - Can perform a wide range of distinct tasks
 - Is made available to third parties via API, open source, or product integration
 """,
     "step_8": """
-Art 51 — GPAI Systemic Risk:
+Article 51 — GPAI Systemic Risk:
 A GPAI model has systemic risk if it:
 - Has high-impact capabilities posing serious risk to health, safety, or fundamental rights
 - Has cumulative training compute above 10^25 FLOPs
-If systemic risk is present, additional obligations in Art 54 apply.
+If systemic risk is present, additional obligations in Article 54 apply.
 """
 }
 
@@ -165,7 +165,7 @@ Your task:
     - 0.1 = facts are insufficient to determine, guessing
 
 Return only JSON, no markdown, no explanation:
-{"answer": "yes", "confidence": 0.7, "justification": "Based on Art X: ..."}"""
+{"answer": "yes", "confidence": 0.7, "justification": "Based on Article X: ..."}"""
 
 
 def _parse_decision_response(text: str) -> dict:
@@ -221,7 +221,7 @@ Low confidence or missing fa cts (treat as unknown):
 
 Question: {question}
 
-Return only JSON: {{"answer": "yes", "confidence": 0.7, "justification": "Based on Art X: ..."}}"""}
+Return only JSON: {{"answer": "yes", "confidence": 0.7, "justification": "Based on Article X: ..."}}"""}
         ],
         temperature=0,
         max_tokens=150
