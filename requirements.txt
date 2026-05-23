@@ -1,0 +1,7 @@
+pymupdf
+sentence-transformers
+faiss-cpu
+pydantic
+openai
+numpy
+python-dotenv
