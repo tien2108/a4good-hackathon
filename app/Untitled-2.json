@@ -1,0 +1,119 @@
+{
+	"risk_level": "HIGH RISK — DEPLOYER",
+	"articles": ["Art 6", "Art 9-15", "Art 26", "Art 99.4e"],
+	"description": "Your system is high-risk. As a deployer, Art 26 also applies. Fine details in Art 99.4e.",
+	"overall_confidence": 0.53,
+	"weakest_link_confidence": 0.1,
+	"overall_confidence_label": "MEDIUM",
+	"classification_certainty": {
+		"score": 0.0,
+		"label": "VERY LOW",
+		"explanation": "Classification should not be trusted. Too many steps were near-guesses.",
+		"penalities_applied": { "chain_length": 0.15, "near_guess": 0.4 },
+		"weak_steps": [
+			{
+				"step": "step_5",
+				"question": "Is the system exempted from high-risk classification based on Art 6.3? (narrow procedural task, improves prior human activity, detects patterns without making decisions about people, no significant risk to rights)",
+				"answer": "no",
+				"confidence": 0.4,
+				"justification": "Based on Art 6.3: - It detects patterns/anomalies and is not used to make decisions about people. However, the system's outputs automate entry approvals, which could be considered making decisions about people. Additionally, the possible impact on people (stress) may indicate a significant risk to rights."
+			},
+			{
+				"step": "step_5a",
+				"question": "Is the role of the user a provider or provider's representative?",
+				"answer": "no",
+				"confidence": 0.1,
+				"justification": "Based on Art 16-22: A user is a provider or provider's representative if they: - Developed or placed the AI system on the market under their name - Are the authorised representative of a non-EU provider"
+			},
+			{
+				"step": "step_5b",
+				"question": "Is the role of the user an importer?",
+				"answer": "no",
+				"confidence": 0.1,
+				"justification": "Based on Art 23: A user is an importer if they are established in the EU and place a third-country provider's AI system on the EU market. The facts do not provide information about the user's establishment in the EU or the origin of the AI system."
+			},
+			{
+				"step": "step_5c",
+				"question": "Is the role of the user a distributor?",
+				"answer": "no",
+				"confidence": 0.1,
+				"justification": "Based on Art 24: A user is a distributor if they make an AI system available on the EU market without being the provider or importer. The facts do not explicitly mention the user making the AI system available on the EU market, so it is unclear if the user is a distributor."
+			}
+		]
+	},
+	"needs_human_review": true,
+	"reasoning_trace": [
+		{
+			"step": "step_1",
+			"question": "Is the AI system in scope of the EU AI Act based on Art 2? (i.e. placed on EU market, used in EU, or output used in EU — excluding military, national security, personal non-professional use, or pure R&D)",
+			"answer": "yes",
+			"confidence": 0.7,
+			"confidence_label": "HIGH",
+			"justification": "Based on Art 2: The AI Act applies to Providers/deployers outside the EU when output is used in the EU"
+		},
+		{
+			"step": "step_2",
+			"question": "Does any condition in Art 25.1 apply? (i.e. the deployer places the system under their own name/trademark, makes a substantial modification, or changes the intended purpose to make it high-risk)",
+			"answer": "no",
+			"confidence": 1.0,
+			"confidence_label": "HIGH",
+			"justification": "Based on Art 25.1: None of the conditions apply, as there is no mention of the deployer placing the system under their own name/trademark, making a substantial modification, or changing the intended purpose to make it high-risk."
+		},
+		{
+			"step": "step_3",
+			"question": "Is the system prohibited under Art 5? (subliminal manipulation, exploitation of vulnerabilities, biometric categorisation of sensitive attributes, real-time biometric ID in public spaces, social scoring, criminal risk profiling, emotion recognition at work/school, untargeted facial scraping)",
+			"answer": "no",
+			"confidence": 1.0,
+			"confidence_label": "HIGH",
+			"justification": "Based on Art 5: The system does not use subliminal, manipulative, or deceptive techniques that distort behavior, does not exploit vulnerabilities of specific groups, does not use biometric categorisation inferring sensitive attributes, does not use real-time remote biometric identification in public spaces for law enforcement, does not use social scoring by public authorities, does not assess risk of criminal offence based on profiling, does not use emotion recognition in workplace or educational institutions, and does not use untargeted scraping of facial images from internet/CCTV."
+		},
+		{
+			"step": "step_4",
+			"question": "Is the system high-risk based on Art 6.1? (biometrics, critical infrastructure, education, employment, essential services, law enforcement, migration, administration of justice)",
+			"answer": "yes",
+			"confidence": 0.7,
+			"confidence_label": "HIGH",
+			"justification": "Based on Art 6.1: 7. Migration, asylum, border control"
+		},
+		{
+			"step": "step_5",
+			"question": "Is the system exempted from high-risk classification based on Art 6.3? (narrow procedural task, improves prior human activity, detects patterns without making decisions about people, no significant risk to rights)",
+			"answer": "no",
+			"confidence": 0.4,
+			"confidence_label": "MEDIUM",
+			"justification": "Based on Art 6.3: - It detects patterns/anomalies and is not used to make decisions about people. However, the system's outputs automate entry approvals, which could be considered making decisions about people. Additionally, the possible impact on people (stress) may indicate a significant risk to rights."
+		},
+		{
+			"step": "step_5a",
+			"question": "Is the role of the user a provider or provider's representative?",
+			"answer": "no",
+			"confidence": 0.1,
+			"confidence_label": "LOW",
+			"justification": "Based on Art 16-22: A user is a provider or provider's representative if they: - Developed or placed the AI system on the market under their name - Are the authorised representative of a non-EU provider"
+		},
+		{
+			"step": "step_5b",
+			"question": "Is the role of the user an importer?",
+			"answer": "no",
+			"confidence": 0.1,
+			"confidence_label": "LOW",
+			"justification": "Based on Art 23: A user is an importer if they are established in the EU and place a third-country provider's AI system on the EU market. The facts do not provide information about the user's establishment in the EU or the origin of the AI system."
+		},
+		{
+			"step": "step_5c",
+			"question": "Is the role of the user a distributor?",
+			"answer": "no",
+			"confidence": 0.1,
+			"confidence_label": "LOW",
+			"justification": "Based on Art 24: A user is a distributor if they make an AI system available on the EU market without being the provider or importer. The facts do not explicitly mention the user making the AI system available on the EU market, so it is unclear if the user is a distributor."
+		},
+		{
+			"step": "step_5d",
+			"question": "Is the role of the user a deployer?",
+			"answer": "yes",
+			"confidence": 0.7,
+			"confidence_label": "HIGH",
+			"justification": "Based on Art 26: A user is a deployer if they use an AI system under their authority in a professional context. The AI system is used in a professional context for Border control management, which is a Government/Public Sector."
+		}
+	]
+}
