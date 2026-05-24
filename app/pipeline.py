@@ -1,33 +1,23 @@
-from app.extract_pdf import extract_pdf_text
+from app.extract_file import extract_file_text
 from app.chunking import chunk_pages
 from app.embeddings import embed_text
 from app.vector_store import VectorStore
 from app.retrieval import retrieve_chunks
-from app.llm_extract import extract_fact
-from app.classification_agent import classify_risk, validate_facts_for_classification
-import tempfile
-import os
+from app.llm_extract import extract_fact, FIELDS
+from app.classification_agent import classify_risk, is_ai_related, validate_facts_for_classification
 
-FIELDS = [
-    "purpose", "users", "affected persons", "sector", "input data",
-    "outputs", "automation level", "human oversight", "deployment context",
-    "use of AI-generated content", "use of GPAI", "possible impact on people"
-]
+def run_pipeline(file_data: list[tuple[bytes, str]]) -> dict:
+    
+        all_pages = []
 
-def run_pipeline(file_bytes: bytes) -> dict:
-    # Step 1: Save bytes to a temp file (extract_pdf_text expects a path)
-    with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as tmp:
-        tmp.write(file_bytes)
-        tmp_path = tmp.name
-
-    try:
-        # Step 2: Extract
-        pages = extract_pdf_text(tmp_path)
+        for file_bytes, filename in file_data:
+            pages = extract_file_text(file_bytes, filename)
+            all_pages.extend(pages)   # merge all pages into one flat list
 
         # Step 3: Chunk
-        chunks = chunk_pages(pages)
+        chunks = chunk_pages(all_pages)
         if not chunks:
-            return {"error": "No content could be extracted from the PDF."}
+            return {"error": "No content could be extracted from the files."}
 
         # Step 4: Embed + build vector store
         first_embedding = embed_text(chunks[0]["text"])
@@ -43,7 +33,14 @@ def run_pipeline(file_bytes: bytes) -> dict:
         for field in FIELDS:
             relevant_chunks = retrieve_chunks(vector_store, field)
             results[field] = extract_fact(field, relevant_chunks)
-
+            
+        # Step 5.5: Check if document is AI-related
+        if not is_ai_related(results):
+            return {
+                "status": "rejected",
+                "reason": "Document does not appear to describe an AI system.",
+                "extracted_fields": results,
+            }
         # Step 6: Validate
         validation = validate_facts_for_classification(results)
 
@@ -64,6 +61,3 @@ def run_pipeline(file_bytes: bytes) -> dict:
             "extracted_fields": results,
             "classification": classification,
         }
-
-    finally:
-        os.remove(tmp_path)  # always clean up temp file
