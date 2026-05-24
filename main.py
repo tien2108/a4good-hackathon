@@ -13,10 +13,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-ALLOWED_TYPES = {
+ALLOWED_EXTENSIONS = {".pdf", ".docx", ".pptx"}
+
+ALLOWED_MIME_TYPES = {
     "application/pdf",
     "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-    "application/octet-stream",  # ✅ curl fallback — validate by extension instead
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    "application/octet-stream",  # curl fallback
 }
 
 @app.post("/analyze/")
@@ -26,7 +29,9 @@ async def analyze_pdf(files: List[UploadFile] = File(...)):
 
     file_data = []
     for file in files:
-        if file.content_type not in ALLOWED_TYPES:
+        if not any(file.filename.lower().endswith(ext) for ext in ALLOWED_EXTENSIONS):
+            raise HTTPException(400, f"Unsupported file type for '{file.filename}'. Only PDF, DOCX, and PPTX accepted.")
+        if file.content_type not in ALLOWED_MIME_TYPES:
             raise HTTPException(400, f"Unsupported type for '{file.filename}'. Only PDF and DOCX accepted.")
 
         file_bytes = await file.read()
