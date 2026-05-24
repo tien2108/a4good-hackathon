@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { DashboardHeader } from "@/components/compliance/DashboardHeader";
 import { UseCaseSummary } from "@/components/compliance/UseCaseSummary";
+import { DecisionTreeAssessment } from "@/components/compliance/DecisionTreeAssessment";
 import { GovernanceObservations } from "@/components/compliance/GovernanceObservations";
 import { RiskCaveats } from "@/components/compliance/RiskCaveats";
 import { ExportDock } from "@/components/compliance/ExportDock";
@@ -31,6 +32,7 @@ function Index() {
       <DashboardHeader />
       <main className="mx-auto max-w-7xl space-y-6 px-6 py-8 pb-40">
         <UseCaseSummary />
+        <DecisionTreeAssessment />
         <div className="grid gap-6 lg:grid-cols-[65fr_35fr]">
           <GovernanceObservations />
           <RiskCaveats />

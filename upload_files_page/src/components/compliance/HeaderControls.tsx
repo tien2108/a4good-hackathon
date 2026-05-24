@@ -1,11 +1,13 @@
 import { Moon, Sun, Globe } from "lucide-react";
 import { useApp } from "./AppContext";
 import { LANGS } from "./i18n";
+import { HistoryDropdown } from "./HistoryDropdown";
 
 export function HeaderControls() {
   const { theme, toggleTheme, lang, setLang, t } = useApp();
   return (
     <div className="flex items-center gap-1.5">
+      <HistoryDropdown />
       <div
         className="inline-flex items-center rounded-md border border-border bg-card p-0.5"
         role="group"

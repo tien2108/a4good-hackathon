@@ -16,7 +16,7 @@ export function DisclaimerFooter() {
           </p>
         </div>
         <p className="mt-4 text-center text-[11px] text-muted-foreground">
-          © {new Date().getFullYear()} TBD Product · {t("footer.note")}
+          © {new Date().getFullYear()} Norrin Ipsum · {t("footer.note")}
         </p>
       </div>
     </footer>

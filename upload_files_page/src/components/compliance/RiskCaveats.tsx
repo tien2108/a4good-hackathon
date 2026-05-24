@@ -1,4 +1,5 @@
-import { AlertTriangle, CircleHelp, Check } from "lucide-react";
+import { useState } from "react";
+import { AlertTriangle, CircleHelp, X, ShieldAlert, Check } from "lucide-react";
 import { Tag } from "./Tag";
 import { useI18n } from "@/lib/i18n";
 import { useBackendData } from "@/lib/backend-data";
@@ -6,9 +7,16 @@ import { useBackendData } from "@/lib/backend-data";
 const uncertaintyKeys = ["sec3.u1", "sec3.u2", "sec3.u3", "sec3.u4"];
 const actionKeys = ["sec3.a1", "sec3.a2", "sec3.a3", "sec3.a4", "sec3.a5"];
 
+interface DetailState {
+  title: string;
+  content: string;
+  type: "assumption" | "gap" | "uncertainty" | "action";
+}
+
 export function RiskCaveats() {
   const { t } = useI18n();
   const { session } = useBackendData();
+  const [activeDetail, setActiveDetail] = useState<DetailState | null>(null);
 
   const isOutOfScope = 
     session?.riskClassification?.toLowerCase().includes("out of scope") ||
@@ -50,6 +58,7 @@ export function RiskCaveats() {
     );
   }
 
+  // Dynamic Completed State View
   if (session && (session.status.startsWith("COMPLETED") || session.assumptions?.length > 0 || session.gaps?.length > 0)) {
     const assumptions = session?.assumptions || [];
     const gaps = session?.gaps || [];
@@ -67,7 +76,7 @@ export function RiskCaveats() {
             Assumptions & Assessment Gaps
           </h2>
           <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-            Auditing the pre-market compliance liabilities, legal risks, and critical gaps identified by the pipeline.
+            Auditing the pre-market compliance liabilities, legal risks, and critical gaps identified by the pipeline. Click any item to explore full details.
           </p>
         </header>
 
@@ -83,7 +92,6 @@ export function RiskCaveats() {
             <ul className="space-y-3">
               {assumptions.length > 0 ? (
                 assumptions.map((ass, i) => {
-                  // Clean standard label if present
                   const cleanAss = ass.replace("[ASSUMPTION]", "").trim();
                   const isLong = cleanAss.length > 100;
                   const displayAss = isLong ? `${cleanAss.slice(0, 100)}...` : cleanAss;
@@ -91,22 +99,17 @@ export function RiskCaveats() {
                   return (
                     <li
                       key={i}
-                      className="relative group rounded border border-gap/20 bg-card/40 px-3 py-2.5 text-sm leading-relaxed text-foreground/85 transition hover:border-gap/40 cursor-help"
+                      onClick={() => setActiveDetail({
+                        title: "Assumed Compliance Setup",
+                        content: cleanAss,
+                        type: "assumption"
+                      })}
+                      className="rounded-xl border border-gap/20 bg-card/45 px-4 py-3 text-sm leading-relaxed text-foreground/85 transition-all hover:border-gap/50 hover:bg-muted/10 cursor-pointer hover:scale-[1.005] active:scale-[0.995] duration-200 select-none shadow-sm flex items-center justify-between gap-4"
                     >
-                      <div>
-                        <span>{displayAss}</span>
-                        {isLong && (
-                          <span className="text-[10px] text-muted-foreground/60 italic ml-1 select-none">
-                            (mouse over for details)
-                          </span>
-                        )}
-                      </div>
-                      {isLong && (
-                        <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2.5 z-50 w-80 p-3 rounded-lg border border-border bg-popover text-popover-foreground text-xs shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none leading-relaxed">
-                          <p className="font-semibold text-gap mb-1 uppercase tracking-wider text-[9px]">Assumed Compliance Setup</p>
-                          {cleanAss}
-                        </div>
-                      )}
+                      <span className="flex-1 text-left">{displayAss}</span>
+                      <span className="shrink-0 text-[10px] text-gap bg-gap/10 px-2 py-0.5 rounded-full font-bold tracking-tight uppercase">
+                        Details
+                      </span>
                     </li>
                   );
                 })
@@ -136,22 +139,17 @@ export function RiskCaveats() {
                   return (
                     <li
                       key={i}
-                      className="relative group rounded border border-gap/20 bg-card/40 px-3 py-2.5 text-sm leading-relaxed text-foreground/85 transition hover:border-gap/40 cursor-help"
+                      onClick={() => setActiveDetail({
+                        title: "Critical Assessment Gap",
+                        content: cleanGap,
+                        type: "gap"
+                      })}
+                      className="rounded-xl border border-gap/20 bg-card/45 px-4 py-3 text-sm leading-relaxed text-foreground/85 transition-all hover:border-gap/50 hover:bg-muted/10 cursor-pointer hover:scale-[1.005] active:scale-[0.995] duration-200 select-none shadow-sm flex items-center justify-between gap-4"
                     >
-                      <div>
-                        <span>{displayGap}</span>
-                        {isLong && (
-                          <span className="text-[10px] text-muted-foreground/60 italic ml-1 select-none">
-                            (mouse over for details)
-                          </span>
-                        )}
-                      </div>
-                      {isLong && (
-                        <div className="absolute left-1/2 -translate-x-1/2 bottom-full mb-2.5 z-50 w-80 p-3 rounded-lg border border-border bg-popover text-popover-foreground text-xs shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 pointer-events-none leading-relaxed">
-                          <p className="font-semibold text-gap mb-1 uppercase tracking-wider text-[9px]">Critical Assessment Gap</p>
-                          {cleanGap}
-                        </div>
-                      )}
+                      <span className="flex-1 text-left">{displayGap}</span>
+                      <span className="shrink-0 text-[10px] text-gap bg-gap/10 px-2 py-0.5 rounded-full font-bold tracking-tight uppercase">
+                        Details
+                      </span>
                     </li>
                   );
                 })
@@ -163,10 +161,14 @@ export function RiskCaveats() {
             </ul>
           </div>
         </div>
+
+        {/* Modal popup element */}
+        {renderDetailModal(activeDetail, () => setActiveDetail(null))}
       </section>
     );
   }
 
+  // Active Loading Pipeline View
   if (session && session.status !== "IDLE") {
     const isWaiting = session.status !== "CONVERGING" && session.status !== "CHECKING_MISSING_INFO" && session.status !== "AWAITING_USER_UPLOAD";
     const statusMsg = isWaiting
@@ -220,7 +222,7 @@ export function RiskCaveats() {
     );
   }
 
-  // Original fallback static view
+  // Fallback static / empty session view
   return (
     <section className="rounded-lg border border-gap/40 bg-gap-soft/15 shadow-[0_0_60px_-30px_oklch(0.82_0.15_80/0.6)]">
       <header className="border-b border-gap/30 px-6 py-5">
@@ -234,7 +236,7 @@ export function RiskCaveats() {
           {t("sec3.title")}
         </h2>
         <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
-          {t("sec3.subtitle")}
+          {t("sec3.subtitle")} Click any item to explore full details.
         </p>
       </header>
 
@@ -250,9 +252,17 @@ export function RiskCaveats() {
             {uncertaintyKeys.map((u, i) => (
               <li
                 key={i}
-                className="rounded border border-gap/20 bg-card/40 px-3 py-2.5 text-sm leading-relaxed text-foreground/85"
+                onClick={() => setActiveDetail({
+                  title: "Assumed Compliance Setup",
+                  content: t(u),
+                  type: "uncertainty"
+                })}
+                className="rounded-xl border border-gap/20 bg-card/45 px-4 py-3 text-sm leading-relaxed text-foreground/85 transition-all hover:border-gap/50 hover:bg-muted/10 cursor-pointer hover:scale-[1.005] active:scale-[0.995] duration-200 select-none shadow-sm flex items-center justify-between gap-4"
               >
-                {t(u)}
+                <span className="flex-1 text-left">{t(u)}</span>
+                <span className="shrink-0 text-[10px] text-gap bg-gap/10 px-2 py-0.5 rounded-full font-bold tracking-tight uppercase">
+                  Details
+                </span>
               </li>
             ))}
           </ul>
@@ -265,16 +275,102 @@ export function RiskCaveats() {
               {t("sec3.actions.title")}
             </h3>
           </div>
-          <ul className="space-y-2.5">
+          <ul className="space-y-3">
             {actionKeys.map((a, i) => (
-              <li key={i} className="flex gap-3 text-sm leading-relaxed text-foreground/85">
-                <span className="mt-2 h-1 w-1 shrink-0 rounded-full bg-gap" />
-                <span>{t(a)}</span>
+              <li
+                key={i}
+                onClick={() => setActiveDetail({
+                  title: "Critical Assessment Gap",
+                  content: t(a),
+                  type: "action"
+                })}
+                className="rounded-xl border border-gap/20 bg-card/45 px-4 py-3 text-sm leading-relaxed text-foreground/85 transition-all hover:border-gap/50 hover:bg-muted/10 cursor-pointer hover:scale-[1.005] active:scale-[0.995] duration-200 select-none shadow-sm flex items-center justify-between gap-4"
+              >
+                <span className="flex-1 text-left">{t(a)}</span>
+                <span className="shrink-0 text-[10px] text-gap bg-gap/10 px-2 py-0.5 rounded-full font-bold tracking-tight uppercase">
+                  Details
+                </span>
               </li>
             ))}
           </ul>
         </div>
       </div>
+
+      {/* Modal popup element */}
+      {renderDetailModal(activeDetail, () => setActiveDetail(null))}
     </section>
+  );
+}
+
+// Separate wider glassmorphic popup helper centered on screen
+function renderDetailModal(detail: DetailState | null, onClose: () => void) {
+  if (!detail) return null;
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 lg:p-8">
+      {/* Backdrop */}
+      <div 
+        className="absolute inset-0 bg-background/40 backdrop-blur-md transition-opacity duration-300 animate-fade-in"
+        onClick={onClose}
+      />
+
+      {/* Modal container - sleek glassmorphic */}
+      <article className="relative w-full max-w-2xl overflow-hidden rounded-3xl border border-gap/50 bg-card/70 shadow-2xl backdrop-blur-2xl transition-all duration-300 animate-scale-up p-6 sm:p-8">
+        {/* Glow effect */}
+        <div className="pointer-events-none absolute -top-24 -left-24 -z-10 h-48 w-48 rounded-full bg-gap/10 blur-2xl" />
+
+        {/* Header */}
+        <header className="mb-4 flex items-center justify-between border-b border-border/40 pb-4">
+          <div className="flex items-center gap-3">
+            <div className="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-gap/10">
+              <AlertTriangle className="h-4.5 w-4.5 text-gap" />
+            </div>
+            <div>
+              <h3 className="text-xs font-bold uppercase tracking-widest text-gap">
+                {detail.title}
+              </h3>
+              <p className="text-[10px] text-muted-foreground mt-0.5">
+                Regulatory Confidence & Risk Audit Details
+              </p>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            className="rounded-xl border border-border/60 bg-background/50 p-1.5 text-muted-foreground hover:text-foreground hover:bg-muted transition-all cursor-pointer"
+            aria-label="Close details"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </header>
+
+        {/* Elaboration Content */}
+        <div className="space-y-4 text-left select-text">
+          <p className="text-sm leading-relaxed text-foreground/90 font-medium">
+            {detail.content}
+          </p>
+          
+          {/* Extra legal safety advisory context to feel extremely premium */}
+          <div className="mt-4 flex gap-3 rounded-2xl border border-border/40 bg-muted/20 p-4">
+            <ShieldAlert className="h-4.5 w-4.5 text-muted-foreground shrink-0 mt-0.5" />
+            <div className="space-y-1">
+              <h4 className="text-[11px] font-bold text-foreground">Compliance Advisory</h4>
+              <p className="text-[10px] text-muted-foreground leading-relaxed">
+                This risk caveat was automatically synthesized by the regulatory auditor agent. Omissions, technological leaps, or technical limitations identified here can degrade overall certification accuracy. Review these assertions with your legal conformity representative.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <footer className="mt-6 flex justify-end">
+          <button
+            onClick={onClose}
+            className="inline-flex items-center gap-1 rounded-xl bg-gap/10 border border-gap/20 px-4 py-2 text-xs font-bold text-gap hover:bg-gap/20 transition-all cursor-pointer"
+          >
+            Dismiss Detail
+          </button>
+        </footer>
+      </article>
+    </div>
   );
 }

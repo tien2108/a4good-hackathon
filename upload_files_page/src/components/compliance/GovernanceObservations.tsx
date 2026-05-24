@@ -263,7 +263,7 @@ export function GovernanceObservations() {
     );
   }
 
-  // Original fallback static view
+  // Fallback static view
   return (
     <section className="rounded-lg border border-hairline bg-card">
       <header className="flex items-center justify-between gap-4 border-b border-hairline px-7 py-5">
@@ -338,3 +338,4 @@ function renderTextWithHtmlTags(text: string) {
     return part;
   });
 }
+

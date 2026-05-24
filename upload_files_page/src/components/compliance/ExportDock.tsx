@@ -4,10 +4,13 @@ import { toast } from "sonner";
 import { useI18n } from "@/lib/i18n";
 import { useBackendData, BACKEND_URL } from "@/lib/backend-data";
 
+import { useApp } from "./AppContext";
+
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export function ExportDock() {
   const { t } = useI18n();
+  const { currentRisk } = useApp();
   const { session, hasBackendData, triggerEmail } = useBackendData();
   const [email, setEmail] = useState("");
   const [sending, setSending] = useState(false);
@@ -27,25 +30,6 @@ export function ExportDock() {
       toast.error("Failed to send compliance briefing email. Please ensure the backend is running.");
     }
   };
-
-  let currentRisk: "unacceptable" | "high" | "limited" | "minimal" | "out_of_scope" | null = null;
-  if (session?.riskClassification) {
-    const riskClassification = session.riskClassification;
-    const parts = riskClassification.split("**EU AI Act Flowchart Citations**:");
-    const title = parts[0]?.replace(/\*\*/g, "").trim() || "Unclassified / Out of Scope (Article 2)";
-    const titleLower = title.toLowerCase();
-    if (titleLower.includes("unacceptable") || titleLower.includes("prohibited") || titleLower.includes("prohibition")) {
-      currentRisk = "unacceptable";
-    } else if (titleLower.includes("high-risk") || titleLower.includes("high risk") || titleLower.includes("high")) {
-      currentRisk = "high";
-    } else if (titleLower.includes("limited")) {
-      currentRisk = "limited";
-    } else if (titleLower.includes("out of scope") || titleLower.includes("out-of-scope") || titleLower.includes("exempt") || titleLower.includes("article 2")) {
-      currentRisk = "out_of_scope";
-    } else {
-      currentRisk = "minimal";
-    }
-  }
 
   let dockStyle = "border-hairline bg-surface-elevated/95 shadow-[0_20px_60px_-20px_rgba(0,0,0,0.6)]";
   if (currentRisk === "unacceptable") {

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { AlertOctagon, AlertTriangle, Info, CheckCircle2, Coins, Library } from "lucide-react";
+import { AlertOctagon, AlertTriangle, Info, CheckCircle2, Coins, Library, HelpCircle } from "lucide-react";
 import { useApp } from "./AppContext";
 
 type Tab = "risk" | "penalties";
@@ -9,14 +9,16 @@ const tiers = [
   { id: "high", color: "amber", icon: AlertTriangle },
   { id: "limited", color: "brand", icon: Info },
   { id: "minimal", color: "emerald", icon: CheckCircle2 },
+  { id: "out_of_scope", color: "zinc", icon: HelpCircle },
 ] as const;
 
 const colorClass = (c: (typeof tiers)[number]["color"]) =>
   ({
-    destructive: "text-destructive bg-destructive/10 ring-destructive/20",
-    amber: "text-[color:var(--amber-foreground)] bg-[color:var(--amber)]/20 ring-[color:var(--amber)]/30",
-    brand: "text-[color:var(--brand-via)] bg-[color:var(--brand-via)]/10 ring-[color:var(--brand-via)]/20",
-    emerald: "text-[color:var(--emerald)] bg-[color:var(--emerald)]/15 ring-[color:var(--emerald)]/25",
+    destructive: "text-red-500 bg-red-500/10 ring-red-500/20",
+    amber: "text-orange-500 bg-orange-500/10 ring-orange-500/20",
+    brand: "text-yellow-500 bg-yellow-500/10 ring-yellow-500/20",
+    emerald: "text-green-500 bg-green-500/10 ring-green-500/20",
+    zinc: "text-zinc-100 bg-zinc-100/10 ring-zinc-100/20 dark:text-white dark:bg-white/10 dark:ring-white/20",
   })[c];
 
 export function ReferenceSidebar() {
