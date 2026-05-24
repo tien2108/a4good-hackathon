@@ -1,212 +1,322 @@
-# risk_classifier.py
-
 DECISION_TREE = {
+
+    # ── Scope ─────────────────────────────────────────────────────────────────
     "step_1": {
-        "question": "Is the AI system in scope of the EU AI Act based on Art 2? (i.e. placed on EU market, used in EU, or output used in EU — excluding military, national security, personal non-professional use, or pure R&D)",
+        "question": (
+            "Is the AI system in scope of the EU AI Act? "
+            "(deployed in the EU, or its output is used in the EU, by a provider / deployer / importer / distributor — "
+            "excludes military, national security, personal non-professional use, and pure R&D)"
+        ),
         "yes": "step_2",
-        "no": "out_of_scope"
+        "no":  "out_of_scope",
     },
+
+    # ── Role change ───────────────────────────────────────────────────────────
     "step_2": {
-        "question": "Does any condition in Art 25.1 apply? (i.e. the deployer places the system under their own name/trademark, makes a substantial modification, or changes the intended purpose to make it high-risk)",
+        "question": (
+            "Has the deployer become a provider? "
+            "(placed the system under their own name or trademark, made a substantial modification, "
+            "or changed the intended purpose so that the system becomes high-risk)"
+        ),
         "yes": "step_2a",
-        "no": "step_3"
+        "no":  "step_2a",   # both paths continue to Article 5 checks
     },
+
+    # ── Article 5 — prohibited practices (one check per step) ─────────────────
+
     "step_2a": {
-        "question": "Is the system prohibited under Art 5? (subliminal manipulation, exploitation of vulnerabilities, biometric categorisation of sensitive attributes, real-time biometric ID in public spaces, social scoring, criminal risk profiling, emotion recognition at work/school, untargeted facial scraping)",
-        "yes": "prohibited",
-        "no": "step_4"
+        "question": (
+            "Does the system perform social scoring? "
+            "(a public authority or municipality assigns a score, index, reliability rating, or ranking "
+            "to individual citizens based on their behavior, transactions, or personal characteristics, "
+            "and that score affects their access to services, priority treatment, or verification requirements)"
+        ),
+        "yes": "prohibited_social_scoring",
+        "no":  "step_2b",
     },
+
+    "step_2b": {
+        "question": (
+            "Does the system use subliminal, manipulative, or deceptive techniques "
+            "that materially distort a person's behavior in a way that causes or is likely to cause significant harm?"
+        ),
+        "yes": "prohibited_manipulation",
+        "no":  "step_2c",
+    },
+
+    "step_2c": {
+        "question": (
+            "Does the system exploit vulnerabilities of a specific group of persons "
+            "(based on age, disability, or social or economic situation) "
+            "to distort their behavior in a way that causes or is likely to cause harm?"
+        ),
+        "yes": "prohibited_exploitation",
+        "no":  "step_2d",
+    },
+
+    "step_2d": {
+        "question": (
+            "Does the system perform real-time remote biometric identification "
+            "(e.g. facial recognition, gait analysis, fingerprint matching) "
+            "in publicly accessible spaces for law enforcement purposes?"
+        ),
+        "yes": "prohibited_biometric",
+        "no":  "step_3",
+    },
+
+    # ── High-risk classification ───────────────────────────────────────────────
     "step_3": {
-        "question": "Is the system prohibited under Art 5? (subliminal manipulation, exploitation of vulnerabilities, biometric categorisation of sensitive attributes, real-time biometric ID in public spaces, social scoring, criminal risk profiling, emotion recognition at work/school, untargeted facial scraping)",
-        "yes": "prohibited",
-        "no": "step_4"
+        "question": (
+            "Is the system high-risk under Annex III? "
+            "(used in: biometric ID, critical infrastructure, education/training access, "
+            "employment/worker management, essential private/public services such as credit or social benefits, "
+            "law enforcement, migration/border control, or administration of justice)"
+        ),
+        "yes": "step_4",
+        "no":  "step_6",
     },
+
+    # ── High-risk exemption ───────────────────────────────────────────────────
     "step_4": {
-        "question": "Is the system high-risk based on Art 6.1? (biometrics, critical infrastructure, education, employment, essential services, law enforcement, migration, administration of justice)",
-        "yes": "step_5",
-        "no": "step_6"
+        "question": (
+            "Does the system qualify for the Article 6.3 exemption from high-risk classification? "
+            "(it only performs a narrow procedural task, improves a previously completed human activity, "
+            "detects patterns without influencing decisions about people, "
+            "or poses no significant risk to health, safety, or fundamental rights)"
+        ),
+        "yes": "step_6",          # exempted → not high-risk → check transparency
+        "no":  "step_5",          # confirmed high-risk → determine role
     },
+
+    # ── Role determination for high-risk ──────────────────────────────────────
     "step_5": {
-        "question": "Is the system exempted from high-risk classification based on Art 6.3? (narrow procedural task, improves prior human activity, detects patterns without making decisions about people, no significant risk to rights)",
-        "yes": "limited_risk_notify_nca",
-        "no": "step_5a"
-    },
-    "step_5a": {
-        "question": "Is the role of the user a provider or provider's representative?",
+        "question": (
+            "Is the user a provider or provider's representative? "
+            "(developed or placed the system on the EU market under their own name, "
+            "or is the authorised representative of a non-EU provider)"
+        ),
         "yes": "high_risk_provider",
-        "no": "step_5b"
+        "no":  "step_5a",
     },
-    "step_5b": {
-        "question": "Is the role of the user an importer?",
+
+    "step_5a": {
+        "question": (
+            "Is the user an importer? "
+            "(established in the EU and placing a third-country provider's AI system on the EU market)"
+        ),
         "yes": "high_risk_importer",
-        "no": "step_5c"
+        "no":  "step_5b",
     },
-    "step_5c": {
-        "question": "Is the role of the user a distributor?",
+
+    "step_5b": {
+        "question": (
+            "Is the user a distributor? "
+            "(makes the AI system available on the EU market without being the provider or importer)"
+        ),
         "yes": "high_risk_distributor",
-        "no": "step_5d"
+        "no":  "step_5c",
     },
+
+    "step_5c": {
+        "question": (
+            "Is the user a deployer? "
+            "(uses the AI system under their authority in a professional context, "
+            "and is not the provider, importer, or distributor)"
+        ),
+        "yes": "step_5d",
+        "no":  "high_risk_deployer",   # default to deployer if no other role fits
+    },
+
     "step_5d": {
-        "question": "Is the role of the user a deployer?",
-        "yes": "high_risk_deployer",
-        "no": "step_5e"
+        "question": (
+            "Is the deployer a public authority or a private company mandated to provide public services? "
+            "(utilities, transport, healthcare, education, or similar public-interest services)"
+        ),
+        "yes": "high_risk_deployer_public",
+        "no":  "high_risk_deployer",
     },
-    "step_5e": {
-        "question": "Is the role of the user a public body or a company providing public services?",
-        "yes": "high_risk_public_body",
-        "no": "high_risk_general"
-    },
+
+    # ── Transparency obligations ───────────────────────────────────────────────
     "step_6": {
-        "question": "Does the system fall into any AI system described in Art 50? (chatbot, synthetic content generation, emotion recognition, biometric categorisation — requiring transparency disclosures)",
-        "yes": "limited_risk_art50",
-        "no": "step_7"
+        "question": (
+            "Does the system fall under Article 50 transparency obligations? "
+            "(it is a chatbot / conversational AI, generates synthetic media such as deepfakes, "
+            "performs emotion recognition, or performs biometric categorisation)"
+        ),
+        "yes": "transparency_obligation",
+        "no":  "step_7",
     },
+
+    # ── GPAI classification ────────────────────────────────────────────────────
     "step_7": {
-        "question": "Is the system a GPAI model based on Art 51? (trained on broad data, performs wide range of tasks, made available to third parties via API, open source, or product integration)",
+        "question": (
+            "Is the system a General Purpose AI (GPAI) model? "
+            "(trained on broad data at scale, capable of a wide range of distinct tasks, "
+            "and made available to third parties via API, open source, or product integration)"
+        ),
         "yes": "step_8",
-        "no": "minimal_risk"
+        "no":  "minimal_risk",
     },
+
     "step_8": {
-        "question": "Does the GPAI model have systemic risk? (high-impact capabilities or cumulative training compute above 10^25 FLOPs)",
+        "question": (
+            "Does the GPAI model pose systemic risk? "
+            "(designated by the Commission as high-impact, "
+            "or trained with cumulative compute exceeding 10^25 FLOPs)"
+        ),
         "yes": "gpai_systemic_risk",
-        "no": "gpai_standard"
+        "no":  "gpai_standard",
     },
 }
 
+
 RISK_OUTCOMES = {
+
+    # ── Out of scope ───────────────────────────────────────────────────────────
     "out_of_scope": {
         "level": "OUT OF SCOPE",
-        "articles": ["Art 2"],
-        "description": "Your system might be out of scope. Check Art 2.",
-        "disclaimers": [
-            "The AI Act does not replace other EU laws.",
-            "Post-market monitoring should conform to Chapter IX.",
-            "Other fine details in Art 99."
-        ]
+        "articles": ["Article 2"],
+        "description": (
+            "The system is not subject to the EU AI Act. "
+            "It is used exclusively for military, national security, personal non-professional, "
+            "or pure R&D purposes, or has no nexus to the EU market."
+        ),
     },
-    "prohibited": {
+
+    # ── Prohibited ─────────────────────────────────────────────────────────────
+    "prohibited_social_scoring": {
         "level": "PROHIBITED",
-        "articles": ["Art 5", "Art 99.3"],
-        "description": "Your system might be prohibited. Check Art 5. Fine details in Art 99.3.",
-        "disclaimers": [
-            "The AI Act does not replace other EU laws.",
-            "Other fine details in Art 99."
-        ]
+        "articles": ["Article 5(1)(c)"],
+        "description": (
+            "The system is prohibited. "
+            "It performs social scoring by a public authority — "
+            "assigning behavioral scores or indices to citizens that affect their access to services or treatment. "
+            "This practice is explicitly banned under Article 5(1)(c) of the EU AI Act."
+        ),
     },
-    "limited_risk_notify_nca": {
-        "level": "LIMITED RISK",
-        "articles": ["Art 6.3"],
-        "description": "Your system might be considered limited risk. Please notify the National Competent Authority (NCA).",
-        "disclaimers": [
-            "The AI Act does not replace other EU laws.",
-            "Post-market monitoring should conform to Chapter IX.",
-            "Other fine details in Art 99."
-        ]
+
+    "prohibited_manipulation": {
+        "level": "PROHIBITED",
+        "articles": ["Article 5(1)(a)"],
+        "description": (
+            "The system is prohibited. "
+            "It uses subliminal or manipulative techniques that distort human behavior causing significant harm, "
+            "banned under Article 5(1)(a) of the EU AI Act."
+        ),
     },
-    "high_risk_general": {
-        "level": "HIGH RISK",
-        "articles": ["Art 6", "Art 9-15"],
-        "description": "Your system might be considered high-risk based on Art 6. Requirements in Art 9-15 apply.",
-        "disclaimers": [
-            "Notifying authorities and notified bodies, Standards, conformity assessment, certificates, and registration may need to be taken into account.",
-            "The AI Act does not replace other EU laws.",
-            "Post-market monitoring should conform to Chapter IX.",
-            "Other fine details in Art 99."
-        ]
+
+    "prohibited_exploitation": {
+        "level": "PROHIBITED",
+        "articles": ["Article 5(1)(b)"],
+        "description": (
+            "The system is prohibited. "
+            "It exploits vulnerabilities of specific groups (age, disability, social situation) "
+            "to distort behavior in a harmful way, banned under Article 5(1)(b) of the EU AI Act."
+        ),
     },
+
+    "prohibited_biometric": {
+        "level": "PROHIBITED",
+        "articles": ["Article 5(1)(d)"],
+        "description": (
+            "The system is prohibited. "
+            "It performs real-time remote biometric identification in publicly accessible spaces "
+            "for law enforcement, banned under Article 5(1)(d) of the EU AI Act."
+        ),
+    },
+
+    # ── High-risk ──────────────────────────────────────────────────────────────
     "high_risk_provider": {
-        "level": "HIGH RISK — PROVIDER",
-        "articles": ["Art 6", "Art 9-15", "Art 16-22", "Art 72", "Art 99.4a", "Art 99.4b"],
-        "description": "Your system is high-risk. As a provider/provider's representative, Art 16-22 and Art 72 also apply. Fine details in Art 99.4a (provider) or Art 99.4b (representative).",
-        "disclaimers": [
-            "Notifying authorities and notified bodies, Standards, conformity assessment, certificates, and registration may need to be taken into account.",
-            "The AI Act does not replace other EU laws.",
-            "Post-market monitoring should conform to Chapter IX.",
-            "Other fine details in Art 99."
-        ]
+        "level": "HIGH RISK",
+        "articles": ["Article 6", "Article 16", "Article 17", "Article 18",
+                     "Article 19", "Article 20", "Article 21", "Article 72", "Article 99"],
+        "description": (
+            "The system is high-risk and the user is a PROVIDER. "
+            "Obligations include: conformity assessment, CE marking, technical documentation, "
+            "EU database registration, post-market monitoring, and incident reporting."
+        ),
     },
+
     "high_risk_importer": {
-        "level": "HIGH RISK — IMPORTER",
-        "articles": ["Art 6", "Art 9-15", "Art 23", "Art 99.4c"],
-        "description": "Your system is high-risk. As an importer, Art 23 also applies. Fine details in Art 99.4c.",
-        "disclaimers": [
-            "Notifying authorities and notified bodies, Standards, conformity assessment, certificates, and registration may need to be taken into account.",
-            "The AI Act does not replace other EU laws.",
-            "Post-market monitoring should conform to Chapter IX.",
-            "Other fine details in Art 99."
-        ]
+        "level": "HIGH RISK",
+        "articles": ["Article 6", "Article 23", "Article 99"],
+        "description": (
+            "The system is high-risk and the user is an IMPORTER. "
+            "Obligations include: verifying conformity assessment, CE marking, "
+            "and technical documentation before placing on the EU market."
+        ),
     },
+
     "high_risk_distributor": {
-        "level": "HIGH RISK — DISTRIBUTOR",
-        "articles": ["Art 6", "Art 9-15", "Art 24", "Art 99.4d"],
-        "description": "Your system is high-risk. As a distributor, Art 24 also applies. Fine details in Art 99.4d.",
-        "disclaimers": [
-            "Notifying authorities and notified bodies, Standards, conformity assessment, certificates, and registration may need to be taken into account.",
-            "The AI Act does not replace other EU laws.",
-            "Post-market monitoring should conform to Chapter IX.",
-            "Other fine details in Art 99."
-        ]
+        "level": "HIGH RISK",
+        "articles": ["Article 6", "Article 24", "Article 99"],
+        "description": (
+            "The system is high-risk and the user is a DISTRIBUTOR. "
+            "Obligations include: verifying CE marking and declaration of conformity "
+            "before making the system available."
+        ),
     },
+
     "high_risk_deployer": {
-        "level": "HIGH RISK — DEPLOYER",
-        "articles": ["Art 6", "Art 9-15", "Art 26", "Art 99.4e"],
-        "description": "Your system is high-risk. As a deployer, Art 26 also applies. Fine details in Art 99.4e.",
-        "disclaimers": [
-            "Notifying authorities and notified bodies, Standards, conformity assessment, certificates, and registration may need to be taken into account.",
-            "The AI Act does not replace other EU laws.",
-            "Post-market monitoring should conform to Chapter IX.",
-            "Other fine details in Art 99."
-        ]
+        "level": "HIGH RISK",
+        "articles": ["Article 6", "Article 26", "Article 99"],
+        "description": (
+            "The system is high-risk and the user is a DEPLOYER. "
+            "Obligations include: using the system per instructions of use, "
+            "assigning human oversight, monitoring for risks, and retaining logs."
+        ),
     },
-    "high_risk_public_body": {
-        "level": "HIGH RISK — PUBLIC BODY",
-        "articles": ["Art 6", "Art 9-15", "Art 27"],
-        "description": "Your system is high-risk. As a public body or company providing public services, Art 27 also applies.",
-        "disclaimers": [
-            "Notifying authorities and notified bodies, Standards, conformity assessment, certificates, and registration may need to be taken into account.",
-            "The AI Act does not replace other EU laws.",
-            "Post-market monitoring should conform to Chapter IX.",
-            "Other fine details in Art 99."
-        ]
+
+    "high_risk_deployer_public": {
+        "level": "HIGH RISK",
+        "articles": ["Article 6", "Article 26", "Article 27", "Article 99"],
+        "description": (
+            "The system is high-risk and the deployer is a PUBLIC AUTHORITY or public-service provider. "
+            "In addition to standard deployer obligations, a fundamental rights impact assessment "
+            "is required before deployment under Article 27."
+        ),
     },
-    "limited_risk_art50": {
+
+    # ── Transparency ───────────────────────────────────────────────────────────
+    "transparency_obligation": {
         "level": "LIMITED RISK",
-        "articles": ["Art 50", "Art 99.4g"],
-        "description": "Your system is classified as Limited Risk under Art 50. Transparency obligations apply — the system must disclose its AI nature to users. Fine details in Art 99.4g.",
-        "disclaimers": [
-            "The AI Act does not replace other EU laws.",
-            "Post-market monitoring should conform to Chapter IX.",
-            "Other fine details in Art 99."
-        ]
+        "articles": ["Article 50", "Article 99"],
+        "description": (
+            "The system has limited risk but is subject to Article 50 transparency obligations. "
+            "It must disclose its AI nature to users (chatbot disclosure, synthetic media labelling, "
+            "emotion recognition notice, or biometric categorisation notice)."
+        ),
     },
+
+    # ── GPAI ───────────────────────────────────────────────────────────────────
     "gpai_standard": {
         "level": "GPAI",
-        "articles": ["Art 51", "Art 52", "Art 53", "Art 54", "Art 101"],
-        "description": "Your system is a GPAI model. Follow procedure in Art 52. Obligations in Art 53 (if provider) or Art 54 (if provider representative). Fine details in Art 101.",
-        "disclaimers": [
-            "The AI Act does not replace other EU laws.",
-            "Post-market monitoring should conform to Chapter IX.",
-            "Other fine details in Art 99."
-        ]
+        "articles": ["Article 51", "Article 53"],
+        "description": (
+            "The system is a General Purpose AI model without systemic risk. "
+            "Obligations include: technical documentation, transparency to downstream providers, "
+            "copyright policy, and publication of a summary of training data."
+        ),
     },
+
     "gpai_systemic_risk": {
-        "level": "GPAI WITH SYSTEMIC RISK",
-        "articles": ["Art 51", "Art 52", "Art 53", "Art 54", "Art 101"],
-        "description": "Your system is a GPAI model with systemic risk. Follow procedure in Art 52. Obligations in Art 53 (if provider) or Art 54 (if provider representative). Additional obligations in Art 54 also apply due to systemic risk. Fine details in Art 101.",
-        "disclaimers": [
-            "The AI Act does not replace other EU laws.",
-            "Post-market monitoring should conform to Chapter IX.",
-            "Other fine details in Art 99."
-        ]
+        "level": "GPAI — SYSTEMIC RISK",
+        "articles": ["Article 51", "Article 53", "Article 54"],
+        "description": (
+            "The system is a General Purpose AI model WITH systemic risk. "
+            "In addition to standard GPAI obligations, the provider must conduct adversarial testing, "
+            "report serious incidents to the Commission, implement cybersecurity measures, "
+            "and report energy consumption."
+        ),
     },
+
+    # ── Minimal risk ───────────────────────────────────────────────────────────
     "minimal_risk": {
         "level": "MINIMAL RISK",
         "articles": [],
-        "description": "No specific AI Act obligations apply to your system.",
-        "disclaimers": [
-            "The AI Act does not replace other EU laws.",
-            "Post-market monitoring, information sharing and market surveillance should conform to Chapter IX.",
-            "Other fine details in Art 99."
-        ]
-    }
+        "description": (
+            "The system poses minimal risk and is not subject to mandatory obligations under the EU AI Act. "
+            "Voluntary codes of conduct are encouraged but not required."
+        ),
+    },
 }

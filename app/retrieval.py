@@ -1,4 +1,4 @@
-from embeddings import embed_text
+from app.embeddings import embed_text
 
 
 FACT_QUERIES = {
