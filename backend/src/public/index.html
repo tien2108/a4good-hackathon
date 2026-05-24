@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EU AI Act Multi-Agent Compliance Playground</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="glow-bg"></div>
+  
+  <header>
+    <div class="logo">
+      <span class="shield-icon">🛡️</span>
+      <div class="logo-text">
+        <h1>Antigravity Compliance</h1>
+        <p>EU AI ACT MULTI-AGENT COMPLIANCE PIPELINE</p>
+      </div>
+    </div>
+    <div class="badge" style="background: var(--agent-prevention); border-color: rgba(236, 72, 153, 0.4);">V1.4.0 (Verda LLM Integrated - Attempted Authentication Fix)</div>
+  </header>
+
+  <main class="dashboard-grid">
+    <!-- COLUMN 1: CONTROLS & TEST CASES -->
+    <section class="panel controls-panel">
+      <div class="panel-header">
+        <span class="icon">⚙️</span>
+        <h2>Pipeline Controller</h2>
+      </div>
+      
+      <div class="control-group">
+        <label for="scenario-select">Select Proposal Scenario</label>
+        <select id="scenario-select" class="custom-select">
+          <!-- Populated dynamically -->
+        </select>
+        <p id="scenario-desc" class="desc-text">Select a scenario to load a mockup project file.</p>
+      </div>
+
+      <button id="start-btn" class="btn btn-primary">
+        <span>🚀 Start Compliance Scan</span>
+      </button>
+
+      <!-- USER UPLOAD PROMPT DIALOG (Shown conditionally) -->
+      <div id="upload-dialog" class="upload-box hidden animate-slide-in">
+        <div class="alert-header">
+          <span class="blink-dot red"></span>
+          <h3>User Action Required</h3>
+        </div>
+        <p class="alert-desc">The <strong>MissingInfoChecker</strong> detected critical compliance omissions. Please upload supplementary documents covering the missing fields.</p>
+        
+        <div class="missing-fields-tags" id="missing-fields-container">
+          <!-- Filled dynamically -->
+        </div>
+
+        <div class="upload-controls">
+          <button id="upload-doc-btn" class="btn btn-upload">
+            📄 Upload & Rerun Check
+          </button>
+          <button id="skip-upload-btn" class="btn btn-skip">
+            Skip & Proceed with Gaps
+          </button>
+        </div>
+      </div>
+
+      <div class="pipeline-legend">
+        <h3>Teammate Integration Pipeline</h3>
+        <ul class="pipeline-steps">
+          <li class="step completed"><span class="step-num">1</span> Files Upload <span class="owner">(Done)</span></li>
+          <li class="step completed"><span class="step-num">2</span> Input Parser <span class="owner">(Done)</span></li>
+          <li class="step completed"><span class="step-num">3</span> Decision Tree <span class="owner">(Done)</span></li>
+          <li class="step completed"><span class="step-num">4</span> Judge of Governance <span class="owner">(Done)</span></li>
+          <li class="step completed"><span class="step-num">5</span> Missing Info Checker <span class="owner">(Done)</span></li>
+          <li class="step completed"><span class="step-num">6</span> Assumptions Checker <span class="owner">(Done)</span></li>
+          <li class="step completed"><span class="step-num">7</span> Prevention of Confidence <span class="owner">(Done)</span></li>
+          <li class="step completed"><span class="step-num">8</span> Humanized UI Display <span class="owner">(Done)</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- COLUMN 2: REAL-TIME CONVERSATION TERMINAL -->
+    <section class="panel terminal-panel">
+      <div class="panel-header">
+        <span class="icon">💬</span>
+        <div style="flex: 1;">
+          <h2>Agent Conversation Log</h2>
+          <p style="margin: 0; font-size: 10px; color: #f43f5e; opacity: 0.85; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em;">V1.4.0 • Attempted Verda LLM Connection (401 Auth Check)</p>
+        </div>
+        <div id="status-indicator" class="status-indicator status-idle">IDLE</div>
+      </div>
+      <div class="terminal" id="terminal-logs">
+        <div class="system-message">System ready. Select a scenario and start the compliance scan.</div>
+        <!-- Logs populated dynamically -->
+      </div>
+      <div id="terminal-typing" class="typing-indicator hidden">
+        <span></span><span></span><span></span>
+        <span class="typing-text">Agent is processing...</span>
+      </div>
+    </section>
+
+    <!-- COLUMN 3: STATE EXPLORER & COMPLIANCE SUMMARY -->
+    <section class="panel output-panel">
+      <div class="panel-header">
+        <span class="icon">📊</span>
+        <h2>Live Compliance State</h2>
+      </div>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="summary-tab">Dashboard</button>
+        <button class="tab-btn" data-tab="report-tab">Prevention Report</button>
+        <button class="tab-btn" data-tab="raw-tab">State JSON</button>
+      </div>
+
+      <div class="tab-content active" id="summary-tab">
+        <div class="dashboard-scores" id="dashboard-scores">
+          <div class="score-card">
+            <h3>Compliance Score</h3>
+            <div class="score-value" id="comp-score">-</div>
+          </div>
+          <div class="score-card">
+            <h3>Classification</h3>
+            <div class="score-value value-small" id="comp-class">-</div>
+          </div>
+        </div>
+
+        <div class="state-group">
+          <h3>Governance Checklist Completeness</h3>
+          <div class="completeness-grid" id="governance-grid">
+            <div class="chk-item" data-field="documentation"><span>📄 Documentation</span><span class="status">-</span></div>
+            <div class="chk-item" data-field="riskManagement"><span>🛡️ Risk Management</span><span class="status">-</span></div>
+            <div class="chk-item" data-field="transparency"><span>🔍 Transparency</span><span class="status">-</span></div>
+            <div class="chk-item" data-field="humanOversight"><span>👤 Human Oversight</span><span class="status">-</span></div>
+            <div class="chk-item" data-field="monitoring"><span>📈 Monitoring</span><span class="status">-</span></div>
+            <div class="chk-item" data-field="logging"><span>📝 Logging</span><span class="status">-</span></div>
+            <div class="chk-item" data-field="accountability"><span>💼 Accountability</span><span class="status">-</span></div>
+            <div class="chk-item" data-field="roleClarity"><span>🤝 Role Clarity</span><span class="status">-</span></div>
+          </div>
+        </div>
+
+        <div class="state-group">
+          <h3>Identified Assessment Gaps</h3>
+          <div class="gaps-list" id="gaps-list-container">
+            <p class="empty-state">No gaps identified yet. Run evaluation.</p>
+          </div>
+        </div>
+
+        <div class="state-group">
+          <h3>Possible Assumptions Made</h3>
+          <div class="assumptions-list" id="assumptions-list-container">
+            <p class="empty-state">No assumptions analyzed yet. Run evaluation.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="report-tab">
+        <div class="report-markdown-preview" id="report-preview">
+          <p class="empty-state">Report will be compiled once pipeline converges.</p>
+        </div>
+      </div>
+
+      <div class="tab-content" id="raw-tab">
+        <pre class="json-viewer" id="json-viewer">{}</pre>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Antigravity AI Agentic SDK • Built for multi-agent compliance pipelines</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

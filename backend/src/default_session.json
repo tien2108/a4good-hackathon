@@ -1,0 +1,653 @@
+{
+  "sessionId": "session_default",
+  "status": "COMPLETED_SUCCESS",
+  "attemptCount": 0,
+  "uploadedDocs": [],
+  "parsedText": "[DOC_COMPLETE] This proposal details an autonomous medical diagnostics platform. It has full documentation, active hazard monitoring, comprehensive audit logging, clinical-oversight mechanisms, and a clear role charter for clinical deployers.",
+  "riskClassification": "High-Risk AI System (Article 6.1 - Annex I Safety Component/Medical Device)\n\n**EU AI Act Flowchart Citations**:\n- Article 2 (Scope & Exclusions check - Determines if the system's deployment affects the EU market)\n- Article 6.1 (High-Risk - Systems linked to Annex I safety components undergoing third-party checks)\n- Articles 9-15 (High-Risk Requirements - Risk management, data governance, technical file, logging, human oversight)\n- Article 26 (Deployer Obligations - Controls, monitoring, human oversight compliance for AI deployers)\n- Article 99.4e (Fines - Specific penalty framework for Deployer non-compliance)\n- Chapter IX (Post-Market Surveillance - Conformance framework for monitoring, info sharing, and market oversight)\n- Article 99 (General Penalties and Fines framework - Outlines overall administrative enforcement)\n- EU Legal Supremacy Disclaimer (The AI Act operates alongside, and does not replace, other sectoral EU laws)",
+  "governanceData": {
+    "documentation": "Full system logs, technical file architectures, and operating guidelines are provided.",
+    "riskManagement": "Active risk management matrix updated bi-weekly, includes residual liability checks.",
+    "transparency": "Clear user-instructions manual, system capability bounds disclosed in product footer. ",
+    "humanOversight": "Human override button triggers manual lockouts, clinical review board oversees high-risk alerts.",
+    "monitoring": "Continuous telemetry monitor registers sensor drifts and model accuracy.",
+    "logging": "Automated append-only logging of inputs, inferences, and human overrides.",
+    "accountability": "Named AI compliance officer assigned; annual external safety audits scheduled.",
+    "roleClarity": "Clinical operators defined as deployers; hospital network defined as provider/deployer."
+  },
+  "proposalFacts": {
+    "purpose": "autonomous medical diagnostics platform",
+    "users": "Clinical radiologists and hospital staff",
+    "affectedPersons": "Patients undergoing diagnostic scanning",
+    "sector": "Healthcare / High-risk medical diagnostics",
+    "inputData": "Patient medical images (CT scans, X-rays, MRI), electronic health records (EHR) containing health data",
+    "outputs": "Diagnostic classification reports, risk indicators, severity scoring, and anatomical annotations",
+    "automationLevel": "High. Recommends diagnosis and classifications, but includes confirmation gates.",
+    "humanOversight": "Clinical radiologists review, sign-off on every output, and can override any AI recommendation with an override button.",
+    "deploymentContext": "Installed on hospital networks as an integrated clinical decision support tool.",
+    "useOfAiGeneratedContent": "Generates anatomical overlays and synthesized medical reports.",
+    "useOfGpai": "None. Uses specialized clinical computer vision models.",
+    "possibleImpactOnPeople": "Clinical decision outcomes, patient health status, medical diagnosis accuracy."
+  },
+  "missingFields": [],
+  "gaps": [],
+  "assumptions": [
+    "[ASSUMPTION] Operational & Technical: The proposal for a \"autonomous medical diagnostics platform\" targeting Clinical radiologists and hospital staff assumes high-fidelity \"Human-in-the-loop\" oversight, claiming: \"Clinical radiologists review, sign-off on every output, and can override any AI recommendation with an override button.\". However, in real-world workflows, this creates a dangerous assumption that operators will actively review and verify the generated \"Diagnostic classification reports, risk indicators, severity scoring, and anatomical annotations\" before taking action. In high-throughput, resource-scarce environments, clinical or corporate operators are highly prone to \"automation bias\"—passively accepting or rubber-stamping recommendations without independent cognitive verification, effectively transforming an advisory tool into an autonomous pipeline.",
+    "[ASSUMPTION] Supply Chain & Role: The deployment of a \"autonomous medical diagnostics platform\" within the Healthcare / High-risk medical diagnostics sector integrates upstream General Purpose AI (GPAI) capabilities, specifically: \"None. Uses specialized clinical computer vision models.\". The development team assumes this legal setup positions them purely as a \"Deployer\" who is exempt from developer-level safety liabilities. However, under Article 28 of the EU AI Act, because this GPAI foundation is integrated, fine-tuned, or modified to serve a domain-specific High-Risk application, this assumption is legally invalid. It risks reclassifying the developer as the primary \"Provider\", transferring full conformity assessment, audit logging, and risk management compliance burdens onto them.",
+    "[ASSUMPTION] Legal Interpretation: The proposal for a \"autonomous medical diagnostics platform\" within the Healthcare / High-risk medical diagnostics assumes that clinical medical diagnostics is a standard helper application. However, under Annex III and Article 6, medical decision-support systems that analyze patient health data are designated as High-Risk or device-linked. The proposal assumes standard software compliance is sufficient, ignoring strict clinical validation, CE-marking coordination, and software-as-a-medical-device (SaMD) regulatory overlaps. Given the potential impact of \"Clinical decision outcomes, patient health status, medical diagnosis accuracy.\", a failure to preemptively align with statutory High-Risk obligations risks immediate market withdrawal or massive administrative fines.",
+    "[ASSUMPTION] Vulnerability & Impact: The proposal for a \"autonomous medical diagnostics platform\" targeting \"Patients undergoing diagnostic scanning\" assumes that the system does not exploit human vulnerabilities or perpetuate structural inequalities. However, the system's impact on \"Clinical decision outcomes, patient health status, medical diagnosis accuracy.\" creates an inherent power asymmetry. Under Article 5 of the EU AI Act, systems must not utilize subliminal, manipulative, or exploitative techniques. By deploying automated grading/analysis against \"Patients undergoing diagnostic scanning\", the system assumes that everyone has equal access and capability to challenge the algorithm, which is a high-risk assumption in real-world scenarios.",
+    "[ASSUMPTION] Temporal & Lifecycle: Deploying the \"autonomous medical diagnostics platform\" in the context of \"Installed on hospital networks as an integrated clinical decision support tool.\" assumes that compliance obligations only commence once the product is fully commercialized. However, the EU AI Act applies the moment a system is 'placed on the market' or 'put into service' (even for trial/pilot programs in \"Installed on hospital networks as an integrated clinical decision support tool.\"). The proposal assumes its rollout is exempt under research/sandbox clauses, but any operational use with live data activates full legal liabilities immediately. Furthermore, any future model updates or weight adjustments in \"Installed on hospital networks as an integrated clinical decision support tool.\" are assumed to be simple maintenance patches, whereas they actually constitute a 'substantial modification' requiring brand-new conformity certifications.",
+    "[ASSUMPTION] Geographic & Jurisdictional: The deployment plan for \"autonomous medical diagnostics platform\" via \"Installed on hospital networks as an integrated clinical decision support tool.\" assumes that geographic boundaries or external hosting provide a shield against EU regulatory jurisdiction. However, Article 2 of the AI Act establishes strict extraterritoriality: if the system's outputs are used or have effects within the European Union, the system is fully subject to the AI Act. This assumes that the location of the servers, developers, or operators in \"Installed on hospital networks as an integrated clinical decision support tool.\" exempts the project, which is a major legal liability if EU residents are affected.",
+    "[ASSUMPTION] Data Provenance: The proposal for a \"autonomous medical diagnostics platform\" assumes that its input datasets (\"Patient medical images (CT scans, X-rays, MRI), electronic health records (EHR) containing health data\") are inherently balanced, high-quality, and legally compliant for processing. However, training or running models on \"Patient medical images (CT scans, X-rays, MRI), electronic health records (EHR) containing health data\" assumes the absence of systemic or historical biases. In practice, this data frequently reflects entrenched patterns that, when processed, mathematically codify and perpetuate bias. This violates Article 10's strict data governance requirements, especially considering the system's potential impact on \"Clinical decision outcomes, patient health status, medical diagnosis accuracy.\".",
+    "[ASSUMPTION] Governance Alignment: Under EXTREME_CLINICAL strictness level, our specialized audit focus on \"Healthcare / Software-as-a-Medical-Device (SaMD)\" demands precise operational safeguards: \"Evaluate clinical safety, radiologist automation bias, scanner drift calibration, and medical data containment.\". The system's deployment plan assumes the current baseline organizational controls perfectly satisfy these heightened obligations, which must be verified during pre-market validation."
+  ],
+  "preventionOutput": "### 🛡️ EU AI ACT: RISK CONVERGENCE & PREVENTION OF CONFIDENCE REPORT\n\n🔴 **CONFIDENCE STATUS**: HIGH CONFIDENCE OF ALIGNMENT (0 GOVERNANCE GAPS DETECTED)\n\n#### 🚨 Gaps Assessment Explanation:\nNo structural compliance gaps were detected during analysis, permitting high confidence that all 8 core governance vectors—including audit logging, clinical overrides, and risk registers—are formally detailed in the system's specification.\n\n#### 🔍 Critical Assumptions Explanation:\nFurthermore, perfect certitude is prevented by the system's reliance on 8 critical compliance assumptions—principally in the areas of Operational & Technical, Supply Chain & Role, Legal Interpretation. These findings assume active, unbiased human intervention and perfect supplier-deployer divisions, which often diverge from complex clinical or corporate realities.\n\n#### 🎓 AI Expert High-Standard Audit Questions:\n1. **Under high-throughput clinical pressures, radiologists are statistically highly susceptible to 'automation bias'. What specific interface controls or confirmation gates prevent clinical sign-off from becoming a passive, rubber-stamped review rather than active ocular verification?**\n   *Expert Rationale: Audits compliance validation for core governance declarations.*\n\n2. **Since medical computer vision model performance degrades significantly on scanner variations and calibration drift (e.g., Siemens vs. GE scanner raw outputs), what real-time drift-detection telemetry is implemented to flag accuracy drops before diagnostic anomalies occur?**\n   *Expert Rationale: Audits compliance validation for core governance declarations.*\n\n3. **Given that diagnostic reports and anatomical overlays process highly protected healthcare and health-category data under EU definitions, what legal and technical measures are deployed at the ingestion layer to guarantee absolute data minimization and GDPR/HIPAA-compliant containment?**\n   *Expert Rationale: Audits compliance validation for core governance declarations.*\n\n\n---\n\n### 📂 COMPLIANCE DATA CONTAINMENT (HOVER TO REVEAL DETAILS)\n\n<div class=\"hover-details-wrapper\" style=\"border-color: var(--color-success);\">\n  <div class=\"hover-details-trigger\" style=\"color: var(--color-success); font-weight: 600;\">🎉 Position mouse here to view gaps verification report (0 gaps)...</div>\n  <div class=\"hover-details-content\">\n    <p style=\"color: var(--text-secondary); margin: 0; line-height: 1.5;\">Verification complete: All 8 core EU AI Act technical parameters have been successfully detected, audited, and logged inside the proposal structure.</p>\n  </div>\n</div>\n\n<div class=\"hover-details-wrapper\">\n  <div class=\"hover-details-trigger\">🔍 Position mouse here to inspect the complete itemized assumptions checked (8)...</div>\n  <div class=\"hover-details-content\">\n    <ul>\n      <li>[ASSUMPTION] Operational & Technical: The proposal for a \"autonomous medical diagnostics platform\" targeting Clinical radiologists and hospital staff assumes high-fidelity \"Human-in-the-loop\" oversight, claiming: \"Clinical radiologists review, sign-off on every output, and can override any AI recommendation with an override button.\". However, in real-world workflows, this creates a dangerous assumption that operators will actively review and verify the generated \"Diagnostic classification reports, risk indicators, severity scoring, and anatomical annotations\" before taking action. In high-throughput, resource-scarce environments, clinical or corporate operators are highly prone to \"automation bias\"—passively accepting or rubber-stamping recommendations without independent cognitive verification, effectively transforming an advisory tool into an autonomous pipeline.</li><li>[ASSUMPTION] Supply Chain & Role: The deployment of a \"autonomous medical diagnostics platform\" within the Healthcare / High-risk medical diagnostics sector integrates upstream General Purpose AI (GPAI) capabilities, specifically: \"None. Uses specialized clinical computer vision models.\". The development team assumes this legal setup positions them purely as a \"Deployer\" who is exempt from developer-level safety liabilities. However, under Article 28 of the EU AI Act, because this GPAI foundation is integrated, fine-tuned, or modified to serve a domain-specific High-Risk application, this assumption is legally invalid. It risks reclassifying the developer as the primary \"Provider\", transferring full conformity assessment, audit logging, and risk management compliance burdens onto them.</li><li>[ASSUMPTION] Legal Interpretation: The proposal for a \"autonomous medical diagnostics platform\" within the Healthcare / High-risk medical diagnostics assumes that clinical medical diagnostics is a standard helper application. However, under Annex III and Article 6, medical decision-support systems that analyze patient health data are designated as High-Risk or device-linked. The proposal assumes standard software compliance is sufficient, ignoring strict clinical validation, CE-marking coordination, and software-as-a-medical-device (SaMD) regulatory overlaps. Given the potential impact of \"Clinical decision outcomes, patient health status, medical diagnosis accuracy.\", a failure to preemptively align with statutory High-Risk obligations risks immediate market withdrawal or massive administrative fines.</li><li>[ASSUMPTION] Vulnerability & Impact: The proposal for a \"autonomous medical diagnostics platform\" targeting \"Patients undergoing diagnostic scanning\" assumes that the system does not exploit human vulnerabilities or perpetuate structural inequalities. However, the system's impact on \"Clinical decision outcomes, patient health status, medical diagnosis accuracy.\" creates an inherent power asymmetry. Under Article 5 of the EU AI Act, systems must not utilize subliminal, manipulative, or exploitative techniques. By deploying automated grading/analysis against \"Patients undergoing diagnostic scanning\", the system assumes that everyone has equal access and capability to challenge the algorithm, which is a high-risk assumption in real-world scenarios.</li><li>[ASSUMPTION] Temporal & Lifecycle: Deploying the \"autonomous medical diagnostics platform\" in the context of \"Installed on hospital networks as an integrated clinical decision support tool.\" assumes that compliance obligations only commence once the product is fully commercialized. However, the EU AI Act applies the moment a system is 'placed on the market' or 'put into service' (even for trial/pilot programs in \"Installed on hospital networks as an integrated clinical decision support tool.\"). The proposal assumes its rollout is exempt under research/sandbox clauses, but any operational use with live data activates full legal liabilities immediately. Furthermore, any future model updates or weight adjustments in \"Installed on hospital networks as an integrated clinical decision support tool.\" are assumed to be simple maintenance patches, whereas they actually constitute a 'substantial modification' requiring brand-new conformity certifications.</li><li>[ASSUMPTION] Geographic & Jurisdictional: The deployment plan for \"autonomous medical diagnostics platform\" via \"Installed on hospital networks as an integrated clinical decision support tool.\" assumes that geographic boundaries or external hosting provide a shield against EU regulatory jurisdiction. However, Article 2 of the AI Act establishes strict extraterritoriality: if the system's outputs are used or have effects within the European Union, the system is fully subject to the AI Act. This assumes that the location of the servers, developers, or operators in \"Installed on hospital networks as an integrated clinical decision support tool.\" exempts the project, which is a major legal liability if EU residents are affected.</li><li>[ASSUMPTION] Data Provenance: The proposal for a \"autonomous medical diagnostics platform\" assumes that its input datasets (\"Patient medical images (CT scans, X-rays, MRI), electronic health records (EHR) containing health data\") are inherently balanced, high-quality, and legally compliant for processing. However, training or running models on \"Patient medical images (CT scans, X-rays, MRI), electronic health records (EHR) containing health data\" assumes the absence of systemic or historical biases. In practice, this data frequently reflects entrenched patterns that, when processed, mathematically codify and perpetuate bias. This violates Article 10's strict data governance requirements, especially considering the system's potential impact on \"Clinical decision outcomes, patient health status, medical diagnosis accuracy.\".</li><li>[ASSUMPTION] Governance Alignment: Under EXTREME_CLINICAL strictness level, our specialized audit focus on \"Healthcare / Software-as-a-Medical-Device (SaMD)\" demands precise operational safeguards: \"Evaluate clinical safety, radiologist automation bias, scanner drift calibration, and medical data containment.\". The system's deployment plan assumes the current baseline organizational controls perfectly satisfy these heightened obligations, which must be verified during pre-market validation.</li>\n    </ul>\n  </div>\n</div>\n\n",
+  "humanizedSummary": {
+    "complianceScore": 100,
+    "statusLabel": "FULLY COMPLIANT",
+    "riskClassification": "High-Risk AI System (Article 6.1 - Annex I Safety Component/Medical Device)\n\n**EU AI Act Flowchart Citations**:\n- Article 2 (Scope & Exclusions check - Determines if the system's deployment affects the EU market)\n- Article 6.1 (High-Risk - Systems linked to Annex I safety components undergoing third-party checks)\n- Articles 9-15 (High-Risk Requirements - Risk management, data governance, technical file, logging, human oversight)\n- Article 26 (Deployer Obligations - Controls, monitoring, human oversight compliance for AI deployers)\n- Article 99.4e (Fines - Specific penalty framework for Deployer non-compliance)\n- Chapter IX (Post-Market Surveillance - Conformance framework for monitoring, info sharing, and market oversight)\n- Article 99 (General Penalties and Fines framework - Outlines overall administrative enforcement)\n- EU Legal Supremacy Disclaimer (The AI Act operates alongside, and does not replace, other sectoral EU laws)",
+    "governanceCompleteness": "8 of 8 Parameters Verified",
+    "visualIndicators": {
+      "documentation": true,
+      "riskManagement": true,
+      "transparency": true,
+      "humanOversight": true,
+      "monitoring": true,
+      "logging": true,
+      "accountability": true,
+      "roleClarity": true
+    },
+    "finalReportMarkdown": "### 🛡️ EU AI ACT: RISK CONVERGENCE & PREVENTION OF CONFIDENCE REPORT\n\n🔴 **CONFIDENCE STATUS**: HIGH CONFIDENCE OF ALIGNMENT (0 GOVERNANCE GAPS DETECTED)\n\n#### 🚨 Gaps Assessment Explanation:\nNo structural compliance gaps were detected during analysis, permitting high confidence that all 8 core governance vectors—including audit logging, clinical overrides, and risk registers—are formally detailed in the system's specification.\n\n#### 🔍 Critical Assumptions Explanation:\nFurthermore, perfect certitude is prevented by the system's reliance on 8 critical compliance assumptions—principally in the areas of Operational & Technical, Supply Chain & Role, Legal Interpretation. These findings assume active, unbiased human intervention and perfect supplier-deployer divisions, which often diverge from complex clinical or corporate realities.\n\n#### 🎓 AI Expert High-Standard Audit Questions:\n1. **Under high-throughput clinical pressures, radiologists are statistically highly susceptible to 'automation bias'. What specific interface controls or confirmation gates prevent clinical sign-off from becoming a passive, rubber-stamped review rather than active ocular verification?**\n   *Expert Rationale: Audits compliance validation for core governance declarations.*\n\n2. **Since medical computer vision model performance degrades significantly on scanner variations and calibration drift (e.g., Siemens vs. GE scanner raw outputs), what real-time drift-detection telemetry is implemented to flag accuracy drops before diagnostic anomalies occur?**\n   *Expert Rationale: Audits compliance validation for core governance declarations.*\n\n3. **Given that diagnostic reports and anatomical overlays process highly protected healthcare and health-category data under EU definitions, what legal and technical measures are deployed at the ingestion layer to guarantee absolute data minimization and GDPR/HIPAA-compliant containment?**\n   *Expert Rationale: Audits compliance validation for core governance declarations.*\n\n\n---\n\n### 📂 COMPLIANCE DATA CONTAINMENT (HOVER TO REVEAL DETAILS)\n\n<div class=\"hover-details-wrapper\" style=\"border-color: var(--color-success);\">\n  <div class=\"hover-details-trigger\" style=\"color: var(--color-success); font-weight: 600;\">🎉 Position mouse here to view gaps verification report (0 gaps)...</div>\n  <div class=\"hover-details-content\">\n    <p style=\"color: var(--text-secondary); margin: 0; line-height: 1.5;\">Verification complete: All 8 core EU AI Act technical parameters have been successfully detected, audited, and logged inside the proposal structure.</p>\n  </div>\n</div>\n\n<div class=\"hover-details-wrapper\">\n  <div class=\"hover-details-trigger\">🔍 Position mouse here to inspect the complete itemized assumptions checked (8)...</div>\n  <div class=\"hover-details-content\">\n    <ul>\n      <li>[ASSUMPTION] Operational & Technical: The proposal for a \"autonomous medical diagnostics platform\" targeting Clinical radiologists and hospital staff assumes high-fidelity \"Human-in-the-loop\" oversight, claiming: \"Clinical radiologists review, sign-off on every output, and can override any AI recommendation with an override button.\". However, in real-world workflows, this creates a dangerous assumption that operators will actively review and verify the generated \"Diagnostic classification reports, risk indicators, severity scoring, and anatomical annotations\" before taking action. In high-throughput, resource-scarce environments, clinical or corporate operators are highly prone to \"automation bias\"—passively accepting or rubber-stamping recommendations without independent cognitive verification, effectively transforming an advisory tool into an autonomous pipeline.</li><li>[ASSUMPTION] Supply Chain & Role: The deployment of a \"autonomous medical diagnostics platform\" within the Healthcare / High-risk medical diagnostics sector integrates upstream General Purpose AI (GPAI) capabilities, specifically: \"None. Uses specialized clinical computer vision models.\". The development team assumes this legal setup positions them purely as a \"Deployer\" who is exempt from developer-level safety liabilities. However, under Article 28 of the EU AI Act, because this GPAI foundation is integrated, fine-tuned, or modified to serve a domain-specific High-Risk application, this assumption is legally invalid. It risks reclassifying the developer as the primary \"Provider\", transferring full conformity assessment, audit logging, and risk management compliance burdens onto them.</li><li>[ASSUMPTION] Legal Interpretation: The proposal for a \"autonomous medical diagnostics platform\" within the Healthcare / High-risk medical diagnostics assumes that clinical medical diagnostics is a standard helper application. However, under Annex III and Article 6, medical decision-support systems that analyze patient health data are designated as High-Risk or device-linked. The proposal assumes standard software compliance is sufficient, ignoring strict clinical validation, CE-marking coordination, and software-as-a-medical-device (SaMD) regulatory overlaps. Given the potential impact of \"Clinical decision outcomes, patient health status, medical diagnosis accuracy.\", a failure to preemptively align with statutory High-Risk obligations risks immediate market withdrawal or massive administrative fines.</li><li>[ASSUMPTION] Vulnerability & Impact: The proposal for a \"autonomous medical diagnostics platform\" targeting \"Patients undergoing diagnostic scanning\" assumes that the system does not exploit human vulnerabilities or perpetuate structural inequalities. However, the system's impact on \"Clinical decision outcomes, patient health status, medical diagnosis accuracy.\" creates an inherent power asymmetry. Under Article 5 of the EU AI Act, systems must not utilize subliminal, manipulative, or exploitative techniques. By deploying automated grading/analysis against \"Patients undergoing diagnostic scanning\", the system assumes that everyone has equal access and capability to challenge the algorithm, which is a high-risk assumption in real-world scenarios.</li><li>[ASSUMPTION] Temporal & Lifecycle: Deploying the \"autonomous medical diagnostics platform\" in the context of \"Installed on hospital networks as an integrated clinical decision support tool.\" assumes that compliance obligations only commence once the product is fully commercialized. However, the EU AI Act applies the moment a system is 'placed on the market' or 'put into service' (even for trial/pilot programs in \"Installed on hospital networks as an integrated clinical decision support tool.\"). The proposal assumes its rollout is exempt under research/sandbox clauses, but any operational use with live data activates full legal liabilities immediately. Furthermore, any future model updates or weight adjustments in \"Installed on hospital networks as an integrated clinical decision support tool.\" are assumed to be simple maintenance patches, whereas they actually constitute a 'substantial modification' requiring brand-new conformity certifications.</li><li>[ASSUMPTION] Geographic & Jurisdictional: The deployment plan for \"autonomous medical diagnostics platform\" via \"Installed on hospital networks as an integrated clinical decision support tool.\" assumes that geographic boundaries or external hosting provide a shield against EU regulatory jurisdiction. However, Article 2 of the AI Act establishes strict extraterritoriality: if the system's outputs are used or have effects within the European Union, the system is fully subject to the AI Act. This assumes that the location of the servers, developers, or operators in \"Installed on hospital networks as an integrated clinical decision support tool.\" exempts the project, which is a major legal liability if EU residents are affected.</li><li>[ASSUMPTION] Data Provenance: The proposal for a \"autonomous medical diagnostics platform\" assumes that its input datasets (\"Patient medical images (CT scans, X-rays, MRI), electronic health records (EHR) containing health data\") are inherently balanced, high-quality, and legally compliant for processing. However, training or running models on \"Patient medical images (CT scans, X-rays, MRI), electronic health records (EHR) containing health data\" assumes the absence of systemic or historical biases. In practice, this data frequently reflects entrenched patterns that, when processed, mathematically codify and perpetuate bias. This violates Article 10's strict data governance requirements, especially considering the system's potential impact on \"Clinical decision outcomes, patient health status, medical diagnosis accuracy.\".</li><li>[ASSUMPTION] Governance Alignment: Under EXTREME_CLINICAL strictness level, our specialized audit focus on \"Healthcare / Software-as-a-Medical-Device (SaMD)\" demands precise operational safeguards: \"Evaluate clinical safety, radiologist automation bias, scanner drift calibration, and medical data containment.\". The system's deployment plan assumes the current baseline organizational controls perfectly satisfy these heightened obligations, which must be verified during pre-market validation.</li>\n    </ul>\n  </div>\n</div>\n\n",
+    "timestamp": "17.36.09",
+    "pdfUrl": "/exports/report-session_default.pdf",
+    "pptxUrl": "/exports/briefing-session_default.pptx",
+    "downstreamDecisions": {
+      "strictnessLevel": "EXTREME_CLINICAL",
+      "targetAuditFocus": "Healthcare / Software-as-a-Medical-Device (SaMD)",
+      "humanizerStyleHint": "Premium Clinical-Grade Audit Report (Healthcare Focus)"
+    }
+  },
+  "messages": [
+    {
+      "id": "start-1779546963499",
+      "timestamp": "2026-05-23T14:36:03.499Z",
+      "sender": "User",
+      "recipient": "InputParser",
+      "type": "START",
+      "content": "Start compliance pipeline analysis using scenario: Scenario_Complete",
+      "data": {
+        "sessionId": "test-session-1779546963499",
+        "scenario": "Scenario_Complete"
+      }
+    },
+    {
+      "id": "inputparser-1779546963856-vun5",
+      "timestamp": "2026-05-23T14:36:03.856Z",
+      "sender": "InputParser",
+      "recipient": "System",
+      "type": "LOG",
+      "content": "Received initial parsing request for scenario: Scenario_Complete",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    },
+    {
+      "id": "sys-status-1779546963856",
+      "timestamp": "2026-05-23T14:36:03.856Z",
+      "sender": "System",
+      "recipient": "User",
+      "type": "LOG",
+      "content": "Pipeline status updated to PARSING",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    },
+    {
+      "id": "inputparser-1779546963856-isn8",
+      "timestamp": "2026-05-23T14:36:03.856Z",
+      "sender": "InputParser",
+      "recipient": "System",
+      "type": "LOG",
+      "content": "Successfully parsed document. Text length: 242 characters. Key facts compiled. Sending to DecisionTree.",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    },
+    {
+      "id": "inputparser-1779546963856-watq",
+      "timestamp": "2026-05-23T14:36:03.856Z",
+      "sender": "InputParser",
+      "recipient": "DecisionTree",
+      "type": "CLASSIFY_REQUEST",
+      "content": "Please run risk classification on parsed text",
+      "data": {
+        "sessionId": "test-session-1779546963499",
+        "scenario": "Scenario_Complete",
+        "parsedText": "[DOC_COMPLETE] This proposal details an autonomous medical diagnostics platform. It has full documentation, active hazard monitoring, comprehensive audit logging, clinical-oversight mechanisms, and a clear role charter for clinical deployers."
+      }
+    },
+    {
+      "id": "decisiontree-1779546964210-x0vu",
+      "timestamp": "2026-05-23T14:36:04.210Z",
+      "sender": "DecisionTree",
+      "recipient": "System",
+      "type": "LOG",
+      "content": "Analyzing parsed text to determine risk category and EU AI Act obligations...",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    },
+    {
+      "id": "sys-status-1779546964210",
+      "timestamp": "2026-05-23T14:36:04.210Z",
+      "sender": "System",
+      "recipient": "User",
+      "type": "LOG",
+      "content": "Pipeline status updated to CLASSIFYING",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    },
+    {
+      "id": "decisiontree-1779546964210-jtsi",
+      "timestamp": "2026-05-23T14:36:04.210Z",
+      "sender": "DecisionTree",
+      "recipient": "System",
+      "type": "LOG",
+      "content": "Determination completed: classified as 'High-Risk AI System (Article 6.1 - Annex I Safety Component/Medical Device)'. Routing to JudgeOfGovernance with 10 explicit attributes.",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    },
+    {
+      "id": "decisiontree-1779546964210-pq6u",
+      "timestamp": "2026-05-23T14:36:04.210Z",
+      "sender": "DecisionTree",
+      "recipient": "JudgeOfGovernance",
+      "type": "ANALYZE_GOVERNANCE",
+      "content": "Run governance metrics check",
+      "data": {
+        "sessionId": "test-session-1779546963499",
+        "scenario": "Scenario_Complete",
+        "parsedText": "[DOC_COMPLETE] This proposal details an autonomous medical diagnostics platform. It has full documentation, active hazard monitoring, comprehensive audit logging, clinical-oversight mechanisms, and a clear role charter for clinical deployers.",
+        "riskClassification": "High-Risk AI System (Article 6.1 - Annex I Safety Component/Medical Device)\n\n**EU AI Act Flowchart Citations**:\n- Article 2 (Scope & Exclusions check - Determines if the system's deployment affects the EU market)\n- Article 6.1 (High-Risk - Systems linked to Annex I safety components undergoing third-party checks)\n- Articles 9-15 (High-Risk Requirements - Risk management, data governance, technical file, logging, human oversight)\n- Article 26 (Deployer Obligations - Controls, monitoring, human oversight compliance for AI deployers)\n- Article 99.4e (Fines - Specific penalty framework for Deployer non-compliance)\n- Chapter IX (Post-Market Surveillance - Conformance framework for monitoring, info sharing, and market oversight)\n- Article 99 (General Penalties and Fines framework - Outlines overall administrative enforcement)\n- EU Legal Supremacy Disclaimer (The AI Act operates alongside, and does not replace, other sectoral EU laws)",
+        "appearsToMeetAiSystemDefinition": true,
+        "possibleRiskClassification": "High-Risk AI System (Article 6.1 - Annex I Safety Component/Medical Device)",
+        "transparencyObligations": [],
+        "can_classify": true,
+        "validation": {
+          "avg_extraction_confidence": 0.95
+        },
+        "classification": {
+          "overall_confidence": 0.9
+        },
+        "reasoning_trace": "Clinical diagnostic application with full hazard and monitoring logging. Design components match high-risk classification checklist under Article 6(1) and Annex I.",
+        "citations": [
+          "Article 2 (Scope & Exclusions check - Determines if the system's deployment affects the EU market)",
+          "Article 6.1 (High-Risk - Systems linked to Annex I safety components undergoing third-party checks)",
+          "Articles 9-15 (High-Risk Requirements - Risk management, data governance, technical file, logging, human oversight)",
+          "Article 26 (Deployer Obligations - Controls, monitoring, human oversight compliance for AI deployers)",
+          "Article 99.4e (Fines - Specific penalty framework for Deployer non-compliance)",
+          "Chapter IX (Post-Market Surveillance - Conformance framework for monitoring, info sharing, and market oversight)",
+          "Article 99 (General Penalties and Fines framework - Outlines overall administrative enforcement)",
+          "EU Legal Supremacy Disclaimer (The AI Act operates alongside, and does not replace, other sectoral EU laws)"
+        ],
+        "users": "Clinical radiologists and hospital staff",
+        "affected_persons": "Patients undergoing diagnostic scanning"
+      }
+    },
+    {
+      "id": "judgeofgovernance-1779546964565-u1b8",
+      "timestamp": "2026-05-23T14:36:04.565Z",
+      "sender": "JudgeOfGovernance",
+      "recipient": "System",
+      "type": "LOG",
+      "content": "Analyzing proposal for AI Act compliance parameters (documentation, risk management, human oversight, logging, etc.)...",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    },
+    {
+      "id": "sys-status-1779546964565",
+      "timestamp": "2026-05-23T14:36:04.565Z",
+      "sender": "System",
+      "recipient": "User",
+      "type": "LOG",
+      "content": "Pipeline status updated to ANALYZING_GOVERNANCE",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    },
+    {
+      "id": "judgeofgovernance-1779546964565-uphg",
+      "timestamp": "2026-05-23T14:36:04.565Z",
+      "sender": "JudgeOfGovernance",
+      "recipient": "System",
+      "type": "LOG",
+      "content": "🎉 Received big JSON payload with 10 explicit attributes from DecisionTree:\n{\n  \"appearsToMeetAiSystemDefinition\": true,\n  \"possibleRiskClassification\": \"High-Risk AI System (Article 6.1 - Annex I Safety Component/Medical Device)\",\n  \"transparencyObligations\": [],\n  \"can_classify\": true,\n  \"validation\": {\n    \"avg_extraction_confidence\": 0.95\n  },\n  \"classification\": {\n    \"overall_confidence\": 0.9\n  },\n  \"reasoning_trace\": \"Clinical diagnostic application with full hazard and monitoring logging. Design components match high-risk classification checklist under Article 6(1) and Annex I.\",\n  \"citations\": [\n    \"Article 2 (Scope & Exclusions check - Determines if the system's deployment affects the EU market)\",\n    \"Article 6.1 (High-Risk - Systems linked to Annex I safety components undergoing third-party checks)\",\n    \"Articles 9-15 (High-Risk Requirements - Risk management, data governance, technical file, logging, human oversight)\",\n    \"Article 26 (Deployer Obligations - Controls, monitoring, human oversight compliance for AI deployers)\",\n    \"Article 99.4e (Fines - Specific penalty framework for Deployer non-compliance)\",\n    \"Chapter IX (Post-Market Surveillance - Conformance framework for monitoring, info sharing, and market oversight)\",\n    \"Article 99 (General Penalties and Fines framework - Outlines overall administrative enforcement)\",\n    \"EU Legal Supremacy Disclaimer (The AI Act operates alongside, and does not replace, other sectoral EU laws)\"\n  ],\n  \"users\": \"Clinical radiologists and hospital staff\",\n  \"affected_persons\": \"Patients undergoing diagnostic scanning\"\n}",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    },
+    {
+      "id": "judgeofgovernance-1779546964565-wzfl",
+      "timestamp": "2026-05-23T14:36:04.565Z",
+      "sender": "JudgeOfGovernance",
+      "recipient": "System",
+      "type": "LOG",
+      "content": "Using reasoning_trace to decide parameters and context for Assumption Checker, Missing Information Checker, and the Humanizer...",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    },
+    {
+      "id": "judgeofgovernance-1779546964565-tt0w",
+      "timestamp": "2026-05-23T14:36:04.565Z",
+      "sender": "JudgeOfGovernance",
+      "recipient": "System",
+      "type": "LOG",
+      "content": "Decisions formulated from reasoning_trace: {\n  \"strictnessLevel\": \"EXTREME_CLINICAL\",\n  \"targetAuditFocus\": \"Healthcare / Software-as-a-Medical-Device (SaMD)\",\n  \"assumptionGuidelines\": \"Evaluate clinical safety, radiologist automation bias, scanner drift calibration, and medical data containment.\",\n  \"humanizerStyleHint\": \"Premium Clinical-Grade Audit Report (Healthcare Focus)\"\n}",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    },
+    {
+      "id": "judgeofgovernance-1779546964565-uwqi",
+      "timestamp": "2026-05-23T14:36:04.565Z",
+      "sender": "JudgeOfGovernance",
+      "recipient": "System",
+      "type": "LOG",
+      "content": "Querying Verda meta-llama/Llama-3.1-8B-Instruct LLM for advanced governance audit notes...",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    },
+    {
+      "id": "judgeofgovernance-1779546964565-xgy7",
+      "timestamp": "2026-05-23T14:36:04.565Z",
+      "sender": "JudgeOfGovernance",
+      "recipient": "System",
+      "type": "LOG",
+      "content": "Start import llm",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    },
+    {
+      "id": "judgeofgovernance-1779546964567-bw06",
+      "timestamp": "2026-05-23T14:36:04.567Z",
+      "sender": "JudgeOfGovernance",
+      "recipient": "System",
+      "type": "LOG",
+      "content": "Init successful",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    },
+    {
+      "id": "judgeofgovernance-1779546967600-ok72",
+      "timestamp": "2026-05-23T14:36:07.600Z",
+      "sender": "JudgeOfGovernance",
+      "recipient": "System",
+      "type": "LOG",
+      "content": "⚠️ Verda Llama LLM query failed: Request timed out.. Falling back to reliable simulation data.",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    },
+    {
+      "id": "judgeofgovernance-1779546967600-7ci1",
+      "timestamp": "2026-05-23T14:36:07.600Z",
+      "sender": "JudgeOfGovernance",
+      "recipient": "System",
+      "type": "LOG",
+      "content": "Governance Analysis Complete. Fields populated: [documentation, riskManagement, transparency, humanOversight, monitoring, logging, accountability, roleClarity]. Routing to MissingInfoChecker.",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    },
+    {
+      "id": "judgeofgovernance-1779546967600-cmxy",
+      "timestamp": "2026-05-23T14:36:07.600Z",
+      "sender": "JudgeOfGovernance",
+      "recipient": "MissingInfoChecker",
+      "type": "CHECK_MISSING_INFO",
+      "content": "Please run missing info checker on governance analysis",
+      "data": {
+        "sessionId": "test-session-1779546963499",
+        "scenario": "Scenario_Complete",
+        "governanceData": {
+          "documentation": "Full system logs, technical file architectures, and operating guidelines are provided.",
+          "riskManagement": "Active risk management matrix updated bi-weekly, includes residual liability checks.",
+          "transparency": "Clear user-instructions manual, system capability bounds disclosed in product footer. ",
+          "humanOversight": "Human override button triggers manual lockouts, clinical review board oversees high-risk alerts.",
+          "monitoring": "Continuous telemetry monitor registers sensor drifts and model accuracy.",
+          "logging": "Automated append-only logging of inputs, inferences, and human overrides.",
+          "accountability": "Named AI compliance officer assigned; annual external safety audits scheduled.",
+          "roleClarity": "Clinical operators defined as deployers; hospital network defined as provider/deployer."
+        },
+        "downstreamDecisions": {
+          "strictnessLevel": "EXTREME_CLINICAL",
+          "targetAuditFocus": "Healthcare / Software-as-a-Medical-Device (SaMD)",
+          "assumptionGuidelines": "Evaluate clinical safety, radiologist automation bias, scanner drift calibration, and medical data containment.",
+          "humanizerStyleHint": "Premium Clinical-Grade Audit Report (Healthcare Focus)"
+        }
+      }
+    },
+    {
+      "id": "missinginfochecker-1779546967952-sp8q",
+      "timestamp": "2026-05-23T14:36:07.952Z",
+      "sender": "MissingInfoChecker",
+      "recipient": "System",
+      "type": "LOG",
+      "content": "Reviewing JudgeOfGovernance JSON for required compliance parameters...",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    },
+    {
+      "id": "sys-status-1779546967952",
+      "timestamp": "2026-05-23T14:36:07.952Z",
+      "sender": "System",
+      "recipient": "User",
+      "type": "LOG",
+      "content": "Pipeline status updated to CHECKING_MISSING_INFO",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    },
+    {
+      "id": "missinginfochecker-1779546967952-nr0r",
+      "timestamp": "2026-05-23T14:36:07.952Z",
+      "sender": "MissingInfoChecker",
+      "recipient": "System",
+      "type": "LOG",
+      "content": "Applying trace-driven governance checks under strictness level: EXTREME_CLINICAL",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    },
+    {
+      "id": "missinginfochecker-1779546967952-aftn",
+      "timestamp": "2026-05-23T14:36:07.952Z",
+      "sender": "MissingInfoChecker",
+      "recipient": "System",
+      "type": "LOG",
+      "content": "🎉 Perfect! All 8 governance parameters are present and validated. Moving to convergence stage.",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    },
+    {
+      "id": "sys-status-1779546967952",
+      "timestamp": "2026-05-23T14:36:07.952Z",
+      "sender": "System",
+      "recipient": "User",
+      "type": "LOG",
+      "content": "Pipeline status updated to CONVERGING",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    },
+    {
+      "id": "missinginfochecker-1779546967952-wuez",
+      "timestamp": "2026-05-23T14:36:07.952Z",
+      "sender": "MissingInfoChecker",
+      "recipient": "AssumptionsChecker",
+      "type": "CHECK_ASSUMPTIONS",
+      "content": "Verify proposal assumptions",
+      "data": {
+        "sessionId": "test-session-1779546963499",
+        "downstreamDecisions": {
+          "strictnessLevel": "EXTREME_CLINICAL",
+          "targetAuditFocus": "Healthcare / Software-as-a-Medical-Device (SaMD)",
+          "assumptionGuidelines": "Evaluate clinical safety, radiologist automation bias, scanner drift calibration, and medical data containment.",
+          "humanizerStyleHint": "Premium Clinical-Grade Audit Report (Healthcare Focus)"
+        }
+      }
+    },
+    {
+      "id": "missinginfochecker-1779546967952-jf5p",
+      "timestamp": "2026-05-23T14:36:07.952Z",
+      "sender": "MissingInfoChecker",
+      "recipient": "PreventionOfConfidence",
+      "type": "GAPS_LIST",
+      "content": "Deliver assessment gaps list",
+      "data": {
+        "sessionId": "test-session-1779546963499",
+        "gaps": [],
+        "downstreamDecisions": {
+          "strictnessLevel": "EXTREME_CLINICAL",
+          "targetAuditFocus": "Healthcare / Software-as-a-Medical-Device (SaMD)",
+          "assumptionGuidelines": "Evaluate clinical safety, radiologist automation bias, scanner drift calibration, and medical data containment.",
+          "humanizerStyleHint": "Premium Clinical-Grade Audit Report (Healthcare Focus)"
+        }
+      }
+    },
+    {
+      "id": "assumptionschecker-1779546968306-sqpf",
+      "timestamp": "2026-05-23T14:36:08.306Z",
+      "sender": "AssumptionsChecker",
+      "recipient": "System",
+      "type": "LOG",
+      "content": "Received CHECK_ASSUMPTIONS. Starting deep semantic comparison between Input Parser Key Facts and Judge Of Governance analysis...",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    },
+    {
+      "id": "assumptionschecker-1779546968306-09tu",
+      "timestamp": "2026-05-23T14:36:08.306Z",
+      "sender": "AssumptionsChecker",
+      "recipient": "System",
+      "type": "LOG",
+      "content": "Applying trace-driven decisions to Assumptions Check: Strictness=EXTREME_CLINICAL, Guidelines=\"Evaluate clinical safety, radiologist automation bias, scanner drift calibration, and medical data containment.\"",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    },
+    {
+      "id": "assumptionschecker-1779546968306-zu26",
+      "timestamp": "2026-05-23T14:36:08.306Z",
+      "sender": "AssumptionsChecker",
+      "recipient": "System",
+      "type": "LOG",
+      "content": "Extracting and evaluating compliance assumptions across 7 domains...",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    },
+    {
+      "id": "assumptionschecker-1779546968307-wyqy",
+      "timestamp": "2026-05-23T14:36:08.307Z",
+      "sender": "AssumptionsChecker",
+      "recipient": "System",
+      "type": "LOG",
+      "content": "Analysis complete! Identified 8 high-liability assumptions. Sending ASSUMPTIONS_REPORT to AgentBus.",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    },
+    {
+      "id": "assumptionschecker-1779546968307-gskf",
+      "timestamp": "2026-05-23T14:36:08.307Z",
+      "sender": "AssumptionsChecker",
+      "recipient": "AgentBus",
+      "type": "ASSUMPTIONS_REPORT",
+      "content": "Assumptions analysis complete",
+      "data": {
+        "sessionId": "test-session-1779546963499",
+        "assumptions": [
+          "[ASSUMPTION] Operational & Technical: The proposal for a \"autonomous medical diagnostics platform\" targeting Clinical radiologists and hospital staff assumes high-fidelity \"Human-in-the-loop\" oversight, claiming: \"Clinical radiologists review, sign-off on every output, and can override any AI recommendation with an override button.\". However, in real-world workflows, this creates a dangerous assumption that operators will actively review and verify the generated \"Diagnostic classification reports, risk indicators, severity scoring, and anatomical annotations\" before taking action. In high-throughput, resource-scarce environments, clinical or corporate operators are highly prone to \"automation bias\"—passively accepting or rubber-stamping recommendations without independent cognitive verification, effectively transforming an advisory tool into an autonomous pipeline.",
+          "[ASSUMPTION] Supply Chain & Role: The deployment of a \"autonomous medical diagnostics platform\" within the Healthcare / High-risk medical diagnostics sector integrates upstream General Purpose AI (GPAI) capabilities, specifically: \"None. Uses specialized clinical computer vision models.\". The development team assumes this legal setup positions them purely as a \"Deployer\" who is exempt from developer-level safety liabilities. However, under Article 28 of the EU AI Act, because this GPAI foundation is integrated, fine-tuned, or modified to serve a domain-specific High-Risk application, this assumption is legally invalid. It risks reclassifying the developer as the primary \"Provider\", transferring full conformity assessment, audit logging, and risk management compliance burdens onto them.",
+          "[ASSUMPTION] Legal Interpretation: The proposal for a \"autonomous medical diagnostics platform\" within the Healthcare / High-risk medical diagnostics assumes that clinical medical diagnostics is a standard helper application. However, under Annex III and Article 6, medical decision-support systems that analyze patient health data are designated as High-Risk or device-linked. The proposal assumes standard software compliance is sufficient, ignoring strict clinical validation, CE-marking coordination, and software-as-a-medical-device (SaMD) regulatory overlaps. Given the potential impact of \"Clinical decision outcomes, patient health status, medical diagnosis accuracy.\", a failure to preemptively align with statutory High-Risk obligations risks immediate market withdrawal or massive administrative fines.",
+          "[ASSUMPTION] Vulnerability & Impact: The proposal for a \"autonomous medical diagnostics platform\" targeting \"Patients undergoing diagnostic scanning\" assumes that the system does not exploit human vulnerabilities or perpetuate structural inequalities. However, the system's impact on \"Clinical decision outcomes, patient health status, medical diagnosis accuracy.\" creates an inherent power asymmetry. Under Article 5 of the EU AI Act, systems must not utilize subliminal, manipulative, or exploitative techniques. By deploying automated grading/analysis against \"Patients undergoing diagnostic scanning\", the system assumes that everyone has equal access and capability to challenge the algorithm, which is a high-risk assumption in real-world scenarios.",
+          "[ASSUMPTION] Temporal & Lifecycle: Deploying the \"autonomous medical diagnostics platform\" in the context of \"Installed on hospital networks as an integrated clinical decision support tool.\" assumes that compliance obligations only commence once the product is fully commercialized. However, the EU AI Act applies the moment a system is 'placed on the market' or 'put into service' (even for trial/pilot programs in \"Installed on hospital networks as an integrated clinical decision support tool.\"). The proposal assumes its rollout is exempt under research/sandbox clauses, but any operational use with live data activates full legal liabilities immediately. Furthermore, any future model updates or weight adjustments in \"Installed on hospital networks as an integrated clinical decision support tool.\" are assumed to be simple maintenance patches, whereas they actually constitute a 'substantial modification' requiring brand-new conformity certifications.",
+          "[ASSUMPTION] Geographic & Jurisdictional: The deployment plan for \"autonomous medical diagnostics platform\" via \"Installed on hospital networks as an integrated clinical decision support tool.\" assumes that geographic boundaries or external hosting provide a shield against EU regulatory jurisdiction. However, Article 2 of the AI Act establishes strict extraterritoriality: if the system's outputs are used or have effects within the European Union, the system is fully subject to the AI Act. This assumes that the location of the servers, developers, or operators in \"Installed on hospital networks as an integrated clinical decision support tool.\" exempts the project, which is a major legal liability if EU residents are affected.",
+          "[ASSUMPTION] Data Provenance: The proposal for a \"autonomous medical diagnostics platform\" assumes that its input datasets (\"Patient medical images (CT scans, X-rays, MRI), electronic health records (EHR) containing health data\") are inherently balanced, high-quality, and legally compliant for processing. However, training or running models on \"Patient medical images (CT scans, X-rays, MRI), electronic health records (EHR) containing health data\" assumes the absence of systemic or historical biases. In practice, this data frequently reflects entrenched patterns that, when processed, mathematically codify and perpetuate bias. This violates Article 10's strict data governance requirements, especially considering the system's potential impact on \"Clinical decision outcomes, patient health status, medical diagnosis accuracy.\".",
+          "[ASSUMPTION] Governance Alignment: Under EXTREME_CLINICAL strictness level, our specialized audit focus on \"Healthcare / Software-as-a-Medical-Device (SaMD)\" demands precise operational safeguards: \"Evaluate clinical safety, radiologist automation bias, scanner drift calibration, and medical data containment.\". The system's deployment plan assumes the current baseline organizational controls perfectly satisfy these heightened obligations, which must be verified during pre-market validation."
+        ]
+      }
+    },
+    {
+      "id": "preventionofconfidence-1779546968307-8kzt",
+      "timestamp": "2026-05-23T14:36:08.307Z",
+      "sender": "PreventionOfConfidence",
+      "recipient": "System",
+      "type": "LOG",
+      "content": "Received compliance assessment gaps list. Converging data...",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    },
+    {
+      "id": "preventionofconfidence-1779546968814-cenz",
+      "timestamp": "2026-05-23T14:36:08.814Z",
+      "sender": "PreventionOfConfidence",
+      "recipient": "System",
+      "type": "LOG",
+      "content": "Starting risk convergence calculations on 0 gaps and 8 assumptions...",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    },
+    {
+      "id": "preventionofconfidence-1779546968815-b17s",
+      "timestamp": "2026-05-23T14:36:08.815Z",
+      "sender": "PreventionOfConfidence",
+      "recipient": "System",
+      "type": "LOG",
+      "content": "Risk Convergence Complete. Final report generated. Sending to HumanizerUiDisplay backend adapter.",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    },
+    {
+      "id": "preventionofconfidence-1779546968815-qond",
+      "timestamp": "2026-05-23T14:36:08.815Z",
+      "sender": "PreventionOfConfidence",
+      "recipient": "HumanizerUiDisplay",
+      "type": "PREVENTION_REPORT",
+      "content": "Convergence complete",
+      "data": {
+        "sessionId": "test-session-1779546963499",
+        "preventionReport": "### 🛡️ EU AI ACT: RISK CONVERGENCE & PREVENTION OF CONFIDENCE REPORT\n\n🔴 **CONFIDENCE STATUS**: HIGH CONFIDENCE OF ALIGNMENT (0 GOVERNANCE GAPS DETECTED)\n\n#### 🚨 Gaps Assessment Explanation:\nNo structural compliance gaps were detected during analysis, permitting high confidence that all 8 core governance vectors—including audit logging, clinical overrides, and risk registers—are formally detailed in the system's specification.\n\n#### 🔍 Critical Assumptions Explanation:\nFurthermore, perfect certitude is prevented by the system's reliance on 8 critical compliance assumptions—principally in the areas of Operational & Technical, Supply Chain & Role, Legal Interpretation. These findings assume active, unbiased human intervention and perfect supplier-deployer divisions, which often diverge from complex clinical or corporate realities.\n\n#### 🎓 AI Expert High-Standard Audit Questions:\n1. **Under high-throughput clinical pressures, radiologists are statistically highly susceptible to 'automation bias'. What specific interface controls or confirmation gates prevent clinical sign-off from becoming a passive, rubber-stamped review rather than active ocular verification?**\n   *Expert Rationale: Audits compliance validation for core governance declarations.*\n\n2. **Since medical computer vision model performance degrades significantly on scanner variations and calibration drift (e.g., Siemens vs. GE scanner raw outputs), what real-time drift-detection telemetry is implemented to flag accuracy drops before diagnostic anomalies occur?**\n   *Expert Rationale: Audits compliance validation for core governance declarations.*\n\n3. **Given that diagnostic reports and anatomical overlays process highly protected healthcare and health-category data under EU definitions, what legal and technical measures are deployed at the ingestion layer to guarantee absolute data minimization and GDPR/HIPAA-compliant containment?**\n   *Expert Rationale: Audits compliance validation for core governance declarations.*\n\n\n---\n\n### 📂 COMPLIANCE DATA CONTAINMENT (HOVER TO REVEAL DETAILS)\n\n<div class=\"hover-details-wrapper\" style=\"border-color: var(--color-success);\">\n  <div class=\"hover-details-trigger\" style=\"color: var(--color-success); font-weight: 600;\">🎉 Position mouse here to view gaps verification report (0 gaps)...</div>\n  <div class=\"hover-details-content\">\n    <p style=\"color: var(--text-secondary); margin: 0; line-height: 1.5;\">Verification complete: All 8 core EU AI Act technical parameters have been successfully detected, audited, and logged inside the proposal structure.</p>\n  </div>\n</div>\n\n<div class=\"hover-details-wrapper\">\n  <div class=\"hover-details-trigger\">🔍 Position mouse here to inspect the complete itemized assumptions checked (8)...</div>\n  <div class=\"hover-details-content\">\n    <ul>\n      <li>[ASSUMPTION] Operational & Technical: The proposal for a \"autonomous medical diagnostics platform\" targeting Clinical radiologists and hospital staff assumes high-fidelity \"Human-in-the-loop\" oversight, claiming: \"Clinical radiologists review, sign-off on every output, and can override any AI recommendation with an override button.\". However, in real-world workflows, this creates a dangerous assumption that operators will actively review and verify the generated \"Diagnostic classification reports, risk indicators, severity scoring, and anatomical annotations\" before taking action. In high-throughput, resource-scarce environments, clinical or corporate operators are highly prone to \"automation bias\"—passively accepting or rubber-stamping recommendations without independent cognitive verification, effectively transforming an advisory tool into an autonomous pipeline.</li><li>[ASSUMPTION] Supply Chain & Role: The deployment of a \"autonomous medical diagnostics platform\" within the Healthcare / High-risk medical diagnostics sector integrates upstream General Purpose AI (GPAI) capabilities, specifically: \"None. Uses specialized clinical computer vision models.\". The development team assumes this legal setup positions them purely as a \"Deployer\" who is exempt from developer-level safety liabilities. However, under Article 28 of the EU AI Act, because this GPAI foundation is integrated, fine-tuned, or modified to serve a domain-specific High-Risk application, this assumption is legally invalid. It risks reclassifying the developer as the primary \"Provider\", transferring full conformity assessment, audit logging, and risk management compliance burdens onto them.</li><li>[ASSUMPTION] Legal Interpretation: The proposal for a \"autonomous medical diagnostics platform\" within the Healthcare / High-risk medical diagnostics assumes that clinical medical diagnostics is a standard helper application. However, under Annex III and Article 6, medical decision-support systems that analyze patient health data are designated as High-Risk or device-linked. The proposal assumes standard software compliance is sufficient, ignoring strict clinical validation, CE-marking coordination, and software-as-a-medical-device (SaMD) regulatory overlaps. Given the potential impact of \"Clinical decision outcomes, patient health status, medical diagnosis accuracy.\", a failure to preemptively align with statutory High-Risk obligations risks immediate market withdrawal or massive administrative fines.</li><li>[ASSUMPTION] Vulnerability & Impact: The proposal for a \"autonomous medical diagnostics platform\" targeting \"Patients undergoing diagnostic scanning\" assumes that the system does not exploit human vulnerabilities or perpetuate structural inequalities. However, the system's impact on \"Clinical decision outcomes, patient health status, medical diagnosis accuracy.\" creates an inherent power asymmetry. Under Article 5 of the EU AI Act, systems must not utilize subliminal, manipulative, or exploitative techniques. By deploying automated grading/analysis against \"Patients undergoing diagnostic scanning\", the system assumes that everyone has equal access and capability to challenge the algorithm, which is a high-risk assumption in real-world scenarios.</li><li>[ASSUMPTION] Temporal & Lifecycle: Deploying the \"autonomous medical diagnostics platform\" in the context of \"Installed on hospital networks as an integrated clinical decision support tool.\" assumes that compliance obligations only commence once the product is fully commercialized. However, the EU AI Act applies the moment a system is 'placed on the market' or 'put into service' (even for trial/pilot programs in \"Installed on hospital networks as an integrated clinical decision support tool.\"). The proposal assumes its rollout is exempt under research/sandbox clauses, but any operational use with live data activates full legal liabilities immediately. Furthermore, any future model updates or weight adjustments in \"Installed on hospital networks as an integrated clinical decision support tool.\" are assumed to be simple maintenance patches, whereas they actually constitute a 'substantial modification' requiring brand-new conformity certifications.</li><li>[ASSUMPTION] Geographic & Jurisdictional: The deployment plan for \"autonomous medical diagnostics platform\" via \"Installed on hospital networks as an integrated clinical decision support tool.\" assumes that geographic boundaries or external hosting provide a shield against EU regulatory jurisdiction. However, Article 2 of the AI Act establishes strict extraterritoriality: if the system's outputs are used or have effects within the European Union, the system is fully subject to the AI Act. This assumes that the location of the servers, developers, or operators in \"Installed on hospital networks as an integrated clinical decision support tool.\" exempts the project, which is a major legal liability if EU residents are affected.</li><li>[ASSUMPTION] Data Provenance: The proposal for a \"autonomous medical diagnostics platform\" assumes that its input datasets (\"Patient medical images (CT scans, X-rays, MRI), electronic health records (EHR) containing health data\") are inherently balanced, high-quality, and legally compliant for processing. However, training or running models on \"Patient medical images (CT scans, X-rays, MRI), electronic health records (EHR) containing health data\" assumes the absence of systemic or historical biases. In practice, this data frequently reflects entrenched patterns that, when processed, mathematically codify and perpetuate bias. This violates Article 10's strict data governance requirements, especially considering the system's potential impact on \"Clinical decision outcomes, patient health status, medical diagnosis accuracy.\".</li><li>[ASSUMPTION] Governance Alignment: Under EXTREME_CLINICAL strictness level, our specialized audit focus on \"Healthcare / Software-as-a-Medical-Device (SaMD)\" demands precise operational safeguards: \"Evaluate clinical safety, radiologist automation bias, scanner drift calibration, and medical data containment.\". The system's deployment plan assumes the current baseline organizational controls perfectly satisfy these heightened obligations, which must be verified during pre-market validation.</li>\n    </ul>\n  </div>\n</div>\n\n",
+        "downstreamDecisions": {
+          "strictnessLevel": "EXTREME_CLINICAL",
+          "targetAuditFocus": "Healthcare / Software-as-a-Medical-Device (SaMD)",
+          "assumptionGuidelines": "Evaluate clinical safety, radiologist automation bias, scanner drift calibration, and medical data containment.",
+          "humanizerStyleHint": "Premium Clinical-Grade Audit Report (Healthcare Focus)"
+        }
+      }
+    },
+    {
+      "id": "humanizeruidisplay-1779546969169-yrkf",
+      "timestamp": "2026-05-23T14:36:09.169Z",
+      "sender": "HumanizerUiDisplay",
+      "recipient": "System",
+      "type": "LOG",
+      "content": "Received risk convergence report. Formatting humanized summary and compiling PDF/PPTX report assets...",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    },
+    {
+      "id": "humanizeruidisplay-1779546969188-ur14",
+      "timestamp": "2026-05-23T14:36:09.188Z",
+      "sender": "HumanizerUiDisplay",
+      "recipient": "System",
+      "type": "LOG",
+      "content": "🎉 COMPLIANCE CHECK PIPELINE FULLY CONCLUDED. Display payload stored. Status: COMPLETED_SUCCESS",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    },
+    {
+      "id": "humanizeruidisplay-1779546969188-i21g",
+      "timestamp": "2026-05-23T14:36:09.188Z",
+      "sender": "HumanizerUiDisplay",
+      "recipient": "User",
+      "type": "COMPLETED",
+      "content": "Compliance execution workflow finished",
+      "data": {
+        "sessionId": "test-session-1779546963499",
+        "summary": {
+          "complianceScore": 100,
+          "statusLabel": "FULLY COMPLIANT",
+          "riskClassification": "High-Risk AI System (Article 6.1 - Annex I Safety Component/Medical Device)\n\n**EU AI Act Flowchart Citations**:\n- Article 2 (Scope & Exclusions check - Determines if the system's deployment affects the EU market)\n- Article 6.1 (High-Risk - Systems linked to Annex I safety components undergoing third-party checks)\n- Articles 9-15 (High-Risk Requirements - Risk management, data governance, technical file, logging, human oversight)\n- Article 26 (Deployer Obligations - Controls, monitoring, human oversight compliance for AI deployers)\n- Article 99.4e (Fines - Specific penalty framework for Deployer non-compliance)\n- Chapter IX (Post-Market Surveillance - Conformance framework for monitoring, info sharing, and market oversight)\n- Article 99 (General Penalties and Fines framework - Outlines overall administrative enforcement)\n- EU Legal Supremacy Disclaimer (The AI Act operates alongside, and does not replace, other sectoral EU laws)",
+          "governanceCompleteness": "8 of 8 Parameters Verified",
+          "visualIndicators": {
+            "documentation": true,
+            "riskManagement": true,
+            "transparency": true,
+            "humanOversight": true,
+            "monitoring": true,
+            "logging": true,
+            "accountability": true,
+            "roleClarity": true
+          },
+          "finalReportMarkdown": "### 🛡️ EU AI ACT: RISK CONVERGENCE & PREVENTION OF CONFIDENCE REPORT\n\n🔴 **CONFIDENCE STATUS**: HIGH CONFIDENCE OF ALIGNMENT (0 GOVERNANCE GAPS DETECTED)\n\n#### 🚨 Gaps Assessment Explanation:\nNo structural compliance gaps were detected during analysis, permitting high confidence that all 8 core governance vectors—including audit logging, clinical overrides, and risk registers—are formally detailed in the system's specification.\n\n#### 🔍 Critical Assumptions Explanation:\nFurthermore, perfect certitude is prevented by the system's reliance on 8 critical compliance assumptions—principally in the areas of Operational & Technical, Supply Chain & Role, Legal Interpretation. These findings assume active, unbiased human intervention and perfect supplier-deployer divisions, which often diverge from complex clinical or corporate realities.\n\n#### 🎓 AI Expert High-Standard Audit Questions:\n1. **Under high-throughput clinical pressures, radiologists are statistically highly susceptible to 'automation bias'. What specific interface controls or confirmation gates prevent clinical sign-off from becoming a passive, rubber-stamped review rather than active ocular verification?**\n   *Expert Rationale: Audits compliance validation for core governance declarations.*\n\n2. **Since medical computer vision model performance degrades significantly on scanner variations and calibration drift (e.g., Siemens vs. GE scanner raw outputs), what real-time drift-detection telemetry is implemented to flag accuracy drops before diagnostic anomalies occur?**\n   *Expert Rationale: Audits compliance validation for core governance declarations.*\n\n3. **Given that diagnostic reports and anatomical overlays process highly protected healthcare and health-category data under EU definitions, what legal and technical measures are deployed at the ingestion layer to guarantee absolute data minimization and GDPR/HIPAA-compliant containment?**\n   *Expert Rationale: Audits compliance validation for core governance declarations.*\n\n\n---\n\n### 📂 COMPLIANCE DATA CONTAINMENT (HOVER TO REVEAL DETAILS)\n\n<div class=\"hover-details-wrapper\" style=\"border-color: var(--color-success);\">\n  <div class=\"hover-details-trigger\" style=\"color: var(--color-success); font-weight: 600;\">🎉 Position mouse here to view gaps verification report (0 gaps)...</div>\n  <div class=\"hover-details-content\">\n    <p style=\"color: var(--text-secondary); margin: 0; line-height: 1.5;\">Verification complete: All 8 core EU AI Act technical parameters have been successfully detected, audited, and logged inside the proposal structure.</p>\n  </div>\n</div>\n\n<div class=\"hover-details-wrapper\">\n  <div class=\"hover-details-trigger\">🔍 Position mouse here to inspect the complete itemized assumptions checked (8)...</div>\n  <div class=\"hover-details-content\">\n    <ul>\n      <li>[ASSUMPTION] Operational & Technical: The proposal for a \"autonomous medical diagnostics platform\" targeting Clinical radiologists and hospital staff assumes high-fidelity \"Human-in-the-loop\" oversight, claiming: \"Clinical radiologists review, sign-off on every output, and can override any AI recommendation with an override button.\". However, in real-world workflows, this creates a dangerous assumption that operators will actively review and verify the generated \"Diagnostic classification reports, risk indicators, severity scoring, and anatomical annotations\" before taking action. In high-throughput, resource-scarce environments, clinical or corporate operators are highly prone to \"automation bias\"—passively accepting or rubber-stamping recommendations without independent cognitive verification, effectively transforming an advisory tool into an autonomous pipeline.</li><li>[ASSUMPTION] Supply Chain & Role: The deployment of a \"autonomous medical diagnostics platform\" within the Healthcare / High-risk medical diagnostics sector integrates upstream General Purpose AI (GPAI) capabilities, specifically: \"None. Uses specialized clinical computer vision models.\". The development team assumes this legal setup positions them purely as a \"Deployer\" who is exempt from developer-level safety liabilities. However, under Article 28 of the EU AI Act, because this GPAI foundation is integrated, fine-tuned, or modified to serve a domain-specific High-Risk application, this assumption is legally invalid. It risks reclassifying the developer as the primary \"Provider\", transferring full conformity assessment, audit logging, and risk management compliance burdens onto them.</li><li>[ASSUMPTION] Legal Interpretation: The proposal for a \"autonomous medical diagnostics platform\" within the Healthcare / High-risk medical diagnostics assumes that clinical medical diagnostics is a standard helper application. However, under Annex III and Article 6, medical decision-support systems that analyze patient health data are designated as High-Risk or device-linked. The proposal assumes standard software compliance is sufficient, ignoring strict clinical validation, CE-marking coordination, and software-as-a-medical-device (SaMD) regulatory overlaps. Given the potential impact of \"Clinical decision outcomes, patient health status, medical diagnosis accuracy.\", a failure to preemptively align with statutory High-Risk obligations risks immediate market withdrawal or massive administrative fines.</li><li>[ASSUMPTION] Vulnerability & Impact: The proposal for a \"autonomous medical diagnostics platform\" targeting \"Patients undergoing diagnostic scanning\" assumes that the system does not exploit human vulnerabilities or perpetuate structural inequalities. However, the system's impact on \"Clinical decision outcomes, patient health status, medical diagnosis accuracy.\" creates an inherent power asymmetry. Under Article 5 of the EU AI Act, systems must not utilize subliminal, manipulative, or exploitative techniques. By deploying automated grading/analysis against \"Patients undergoing diagnostic scanning\", the system assumes that everyone has equal access and capability to challenge the algorithm, which is a high-risk assumption in real-world scenarios.</li><li>[ASSUMPTION] Temporal & Lifecycle: Deploying the \"autonomous medical diagnostics platform\" in the context of \"Installed on hospital networks as an integrated clinical decision support tool.\" assumes that compliance obligations only commence once the product is fully commercialized. However, the EU AI Act applies the moment a system is 'placed on the market' or 'put into service' (even for trial/pilot programs in \"Installed on hospital networks as an integrated clinical decision support tool.\"). The proposal assumes its rollout is exempt under research/sandbox clauses, but any operational use with live data activates full legal liabilities immediately. Furthermore, any future model updates or weight adjustments in \"Installed on hospital networks as an integrated clinical decision support tool.\" are assumed to be simple maintenance patches, whereas they actually constitute a 'substantial modification' requiring brand-new conformity certifications.</li><li>[ASSUMPTION] Geographic & Jurisdictional: The deployment plan for \"autonomous medical diagnostics platform\" via \"Installed on hospital networks as an integrated clinical decision support tool.\" assumes that geographic boundaries or external hosting provide a shield against EU regulatory jurisdiction. However, Article 2 of the AI Act establishes strict extraterritoriality: if the system's outputs are used or have effects within the European Union, the system is fully subject to the AI Act. This assumes that the location of the servers, developers, or operators in \"Installed on hospital networks as an integrated clinical decision support tool.\" exempts the project, which is a major legal liability if EU residents are affected.</li><li>[ASSUMPTION] Data Provenance: The proposal for a \"autonomous medical diagnostics platform\" assumes that its input datasets (\"Patient medical images (CT scans, X-rays, MRI), electronic health records (EHR) containing health data\") are inherently balanced, high-quality, and legally compliant for processing. However, training or running models on \"Patient medical images (CT scans, X-rays, MRI), electronic health records (EHR) containing health data\" assumes the absence of systemic or historical biases. In practice, this data frequently reflects entrenched patterns that, when processed, mathematically codify and perpetuate bias. This violates Article 10's strict data governance requirements, especially considering the system's potential impact on \"Clinical decision outcomes, patient health status, medical diagnosis accuracy.\".</li><li>[ASSUMPTION] Governance Alignment: Under EXTREME_CLINICAL strictness level, our specialized audit focus on \"Healthcare / Software-as-a-Medical-Device (SaMD)\" demands precise operational safeguards: \"Evaluate clinical safety, radiologist automation bias, scanner drift calibration, and medical data containment.\". The system's deployment plan assumes the current baseline organizational controls perfectly satisfy these heightened obligations, which must be verified during pre-market validation.</li>\n    </ul>\n  </div>\n</div>\n\n",
+          "timestamp": "17.36.09",
+          "pdfUrl": "/exports/report-test-session-1779546963499.pdf",
+          "pptxUrl": "/exports/briefing-test-session-1779546963499.pptx",
+          "downstreamDecisions": {
+            "strictnessLevel": "EXTREME_CLINICAL",
+            "targetAuditFocus": "Healthcare / Software-as-a-Medical-Device (SaMD)",
+            "humanizerStyleHint": "Premium Clinical-Grade Audit Report (Healthcare Focus)"
+          }
+        }
+      }
+    },
+    {
+      "id": "humanizeruidisplay-1779546969188-yumg",
+      "timestamp": "2026-05-23T14:36:09.188Z",
+      "sender": "HumanizerUiDisplay",
+      "recipient": "System",
+      "type": "LOG",
+      "content": "Compiling PDF/PPTX report assets in the background (will take 2-3 seconds)...",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    },
+    {
+      "id": "humanizeruidisplay-1779546969273-f4cr",
+      "timestamp": "2026-05-23T14:36:09.273Z",
+      "sender": "HumanizerUiDisplay",
+      "recipient": "System",
+      "type": "LOG",
+      "content": "Report assets compiled successfully in the background:",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    },
+    {
+      "id": "humanizeruidisplay-1779546969273-b61u",
+      "timestamp": "2026-05-23T14:36:09.273Z",
+      "sender": "HumanizerUiDisplay",
+      "recipient": "System",
+      "type": "LOG",
+      "content": "📄 PDF: C:\\Users\\dangv\\Documents\\a4good-hackathon\\backend\\src\\public\\exports\\report-test-session-1779546963499.pdf",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    },
+    {
+      "id": "humanizeruidisplay-1779546969273-1ra8",
+      "timestamp": "2026-05-23T14:36:09.273Z",
+      "sender": "HumanizerUiDisplay",
+      "recipient": "System",
+      "type": "LOG",
+      "content": "📊 PPTX: C:\\Users\\dangv\\Documents\\a4good-hackathon\\backend\\src\\public\\exports\\briefing-test-session-1779546963499.pptx",
+      "data": {
+        "sessionId": "test-session-1779546963499"
+      }
+    }
+  ],
+  "reasoningTrace": "Clinical diagnostic application with full hazard and monitoring logging. Design components match high-risk classification checklist under Article 6(1) and Annex I.",
+  "downstreamDecisions": {
+    "strictnessLevel": "EXTREME_CLINICAL",
+    "targetAuditFocus": "Healthcare / Software-as-a-Medical-Device (SaMD)",
+    "assumptionGuidelines": "Evaluate clinical safety, radiologist automation bias, scanner drift calibration, and medical data containment.",
+    "humanizerStyleHint": "Premium Clinical-Grade Audit Report (Healthcare Focus)"
+  }
+}
