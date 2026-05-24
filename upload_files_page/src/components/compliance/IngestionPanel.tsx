@@ -1,5 +1,4 @@
 import { FileDropzone } from "./FileDropzone";
-import { ContextTextarea } from "./ContextTextarea";
 import { AnalyzeButton } from "./AnalyzeButton";
 import { Inbox } from "lucide-react";
 import { useApp } from "./AppContext";
@@ -29,7 +28,6 @@ export function IngestionPanel({ compact = false }: { compact?: boolean }) {
 
       <div className={compact ? "space-y-4" : "space-y-6"}>
         <FileDropzone />
-        {!compact && <ContextTextarea />}
         <AnalyzeButton />
       </div>
     </section>

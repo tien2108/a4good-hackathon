@@ -1,5 +1,7 @@
 import { Layers, ShieldCheck, FileSearch, Sparkles } from "lucide-react";
 import { useApp } from "./AppContext";
+import { IngestionPanel } from "./IngestionPanel";
+import { LandingChatbot } from "./LandingChatbot";
 
 export function IntroSection() {
   const { t } = useApp();
@@ -28,9 +30,16 @@ export function IntroSection() {
           <p className="mx-auto mt-5 max-w-2xl text-pretty text-base text-muted-foreground sm:text-lg">
             {t("intro.subtitle")}
           </p>
+
+          {/* Elevated file submission panel directly below the tagline/subtitle */}
+          <div className="mt-10 text-left max-w-3xl mx-auto space-y-6">
+            <LandingChatbot />
+            <IngestionPanel />
+          </div>
         </div>
 
-        <div className="mt-12 grid gap-4 md:grid-cols-3">
+        {/* 3 descriptive feature columns positioned beautifully beneath the upload section */}
+        <div className="mt-16 grid gap-4 md:grid-cols-3">
           {features.map(({ icon: Icon, title, body }) => (
             <article
               key={title}

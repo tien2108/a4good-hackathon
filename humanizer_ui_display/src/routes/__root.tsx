@@ -12,6 +12,7 @@ import appCss from "../styles.css?url";
 import { Toaster } from "@/components/ui/sonner";
 import { I18nProvider } from "@/lib/i18n";
 import { ThemeProvider } from "@/lib/theme";
+import { BackendDataProvider } from "@/lib/backend-data";
 
 function NotFoundComponent() {
   return (
@@ -124,8 +125,10 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <I18nProvider>
-          <Outlet />
-          <Toaster richColors position="top-right" />
+          <BackendDataProvider>
+            <Outlet />
+            <Toaster richColors position="top-right" />
+          </BackendDataProvider>
         </I18nProvider>
       </ThemeProvider>
     </QueryClientProvider>

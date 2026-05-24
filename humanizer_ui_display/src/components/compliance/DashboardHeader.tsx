@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { ShieldCheck, CircleDot, Sun, Moon, Languages } from "lucide-react";
 import { useI18n, type Lang } from "@/lib/i18n";
 import { useTheme } from "@/lib/theme";
+import { useBackendData } from "@/lib/backend-data";
 
 const LOCALES: Record<Lang, string> = { EN: "en-GB", FI: "fi-FI", SV: "sv-SE" };
 const LANGS: Lang[] = ["FI", "SV", "EN"];
@@ -9,6 +10,7 @@ const LANGS: Lang[] = ["FI", "SV", "EN"];
 export function DashboardHeader() {
   const { lang, setLang, t } = useI18n();
   const { theme, toggle } = useTheme();
+  const { session, hasBackendData } = useBackendData();
   const [date, setDate] = useState("");
 
   useEffect(() => {
@@ -20,6 +22,25 @@ export function DashboardHeader() {
       }),
     );
   }, [lang]);
+
+  const productTitle = session?.proposalFacts?.purpose
+    ? session.proposalFacts.purpose.charAt(0).toUpperCase() + session.proposalFacts.purpose.slice(1)
+    : (session && session.status !== "IDLE" ? "Active Compliance Scan..." : t("header.product"));
+
+  const statusLabel = session?.humanizedSummary?.statusLabel
+    ? session.humanizedSummary.statusLabel
+    : (session && session.status !== "IDLE" ? `Audit Pipeline: ${session.status.replace(/_/g, " ")}` : t("header.status"));
+
+  const score = session?.humanizedSummary?.complianceScore !== undefined
+    ? session.humanizedSummary.complianceScore
+    : null;
+
+  const isSuccess = !session || !session.status || session.status === "IDLE" || session.status.startsWith("COMPLETED") || session.status === "AWAITING_USER_UPLOAD";
+  const badgeClass = isSuccess
+    ? "border-fact/30 bg-fact-soft/30 text-fact"
+    : "border-gap/40 bg-gap-soft/30 text-gap animate-pulse";
+
+  const displayStatus = score !== null ? `${statusLabel} (Score: ${score}/100)` : statusLabel;
 
   return (
     <header className="border-b border-hairline bg-card/40 backdrop-blur">
@@ -33,15 +54,15 @@ export function DashboardHeader() {
               {t("meta.kicker")}
             </p>
             <h1 className="mt-1 text-3xl font-normal text-foreground md:text-4xl">
-              {t("header.product")}
+              {productTitle}
             </h1>
           </div>
         </div>
 
         <div className="flex flex-wrap items-center gap-3">
-          <span className="inline-flex items-center gap-2 rounded-full border border-fact/30 bg-fact-soft/30 px-3 py-1.5 text-xs font-medium text-fact">
+          <span className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-medium ${badgeClass}`}>
             <CircleDot className="h-3 w-3" />
-            {t("header.status")}
+            {displayStatus}
           </span>
           <span
             className="rounded-full border border-hairline bg-surface-elevated px-3 py-1.5 text-xs text-muted-foreground"

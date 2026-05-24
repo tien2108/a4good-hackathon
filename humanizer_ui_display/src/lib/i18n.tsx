@@ -7,7 +7,7 @@ type Dict = Record<string, string>;
 const dictionaries: Record<Lang, Dict> = {
   EN: {
     "meta.kicker": "EU AI Act · Compliance Review",
-    "header.product": "[Product Name TBD]",
+    "header.product": "Norrin Ipsum",
     "header.status": "Analysis Phase: Complete",
     "header.generated": "Generated",
     "header.theme.toLight": "Switch to light mode",
@@ -29,8 +29,8 @@ const dictionaries: Record<Lang, Dict> = {
     "sec1.deploy.title": "Deployment Framework",
     "sec1.deploy.body":
       "Private-cloud SaaS, EU data residency, integrated with the insurer's policy administration system via signed API.",
-    "sec1.tag.sector": "Hard Fact · Sector: Insurance",
-    "sec1.tag.eu": "Hard Fact · EU Deployment",
+    "sec1.tag.sector": "Uploaded-Doc Fact · Sector: Insurance",
+    "sec1.tag.eu": "Uploaded-Doc Fact · EU Deployment",
     "sec1.tag.annex": "Interpretation · High-Risk Annex III candidate",
     "sec1.tag.autonomy": "Gap · Autonomy ceiling unverified",
 
@@ -50,7 +50,7 @@ const dictionaries: Record<Lang, Dict> = {
     "sec2.g3.i1": "Organization acts as the system Provider for the underlying model and as Deployer in its internal rollout.",
     "sec2.g3.i2": "Named accountable executive recorded against the AI system registry entry.",
     "sec2.g3.i3": "Incident response runbook published and rehearsed quarterly with the risk committee.",
-    "tag.fact": "Hard Fact",
+    "tag.fact": "Uploaded-Doc Fact",
     "tag.interpretation": "Interpretation",
 
     "sec3.kicker": "Section 03 · Risk Boundaries",
@@ -86,7 +86,7 @@ const dictionaries: Record<Lang, Dict> = {
   },
   FI: {
     "meta.kicker": "EU:n tekoälyasetus · Vaatimustenmukaisuusarvio",
-    "header.product": "[Tuotteen nimi vahvistamatta]",
+    "header.product": "Norrin Ipsum",
     "header.status": "Analyysivaihe: Valmis",
     "header.generated": "Luotu",
     "header.theme.toLight": "Vaihda vaaleaan tilaan",
@@ -108,8 +108,8 @@ const dictionaries: Record<Lang, Dict> = {
     "sec1.deploy.title": "Käyttöönottokehys",
     "sec1.deploy.body":
       "Yksityispilvi-SaaS, EU-datasijainti, integroitu vakuutusyhtiön vakuutushallintajärjestelmään allekirjoitetun rajapinnan kautta.",
-    "sec1.tag.sector": "Kova fakta · Toimiala: Vakuutus",
-    "sec1.tag.eu": "Kova fakta · EU-käyttöönotto",
+    "sec1.tag.sector": "Ladattu asiakirjafakta · Toimiala: Vakuutus",
+    "sec1.tag.eu": "Ladattu asiakirjafakta · EU-käyttöönotto",
     "sec1.tag.annex": "Tulkinta · Korkean riskin Liite III -ehdokas",
     "sec1.tag.autonomy": "Aukko · Autonomian katto vahvistamatta",
 
@@ -129,7 +129,7 @@ const dictionaries: Record<Lang, Dict> = {
     "sec2.g3.i1": "Organisaatio toimii järjestelmän Tarjoajana taustamallille ja Käyttöönottajana sisäisessä käytössä.",
     "sec2.g3.i2": "Nimetty vastuullinen johtaja kirjattu tekoälyjärjestelmän rekisteriin.",
     "sec2.g3.i3": "Häiriötilannekäsikirja julkaistu ja harjoiteltu neljännesvuosittain riskikomitean kanssa.",
-    "tag.fact": "Kova fakta",
+    "tag.fact": "Ladattu asiakirjafakta",
     "tag.interpretation": "Tulkinta",
 
     "sec3.kicker": "Osa 03 · Riskirajat",
@@ -165,7 +165,7 @@ const dictionaries: Record<Lang, Dict> = {
   },
   SV: {
     "meta.kicker": "EU:s AI-förordning · Efterlevnadsgranskning",
-    "header.product": "[Produktnamn ej fastställt]",
+    "header.product": "Norrin Ipsum",
     "header.status": "Analysfas: Slutförd",
     "header.generated": "Genererad",
     "header.theme.toLight": "Växla till ljust läge",
@@ -187,8 +187,8 @@ const dictionaries: Record<Lang, Dict> = {
     "sec1.deploy.title": "Driftsättningsram",
     "sec1.deploy.body":
       "Privat moln-SaaS, EU-dataresidens, integrerad med försäkringsbolagets policyadministrationssystem via signerat API.",
-    "sec1.tag.sector": "Hårt faktum · Sektor: Försäkring",
-    "sec1.tag.eu": "Hårt faktum · EU-driftsättning",
+    "sec1.tag.sector": "Laddat dokumentfaktum · Sektor: Försäkring",
+    "sec1.tag.eu": "Laddat dokumentfaktum · EU-driftsättning",
     "sec1.tag.annex": "Tolkning · Kandidat för högrisk Bilaga III",
     "sec1.tag.autonomy": "Lucka · Autonomitak ej verifierat",
 
@@ -208,7 +208,7 @@ const dictionaries: Record<Lang, Dict> = {
     "sec2.g3.i1": "Organisationen agerar som systemets Leverantör för den underliggande modellen och som Driftsättare i intern utrullning.",
     "sec2.g3.i2": "Namngiven ansvarig chef registrerad i AI-systemregistret.",
     "sec2.g3.i3": "Incidenthanteringsbok publicerad och övad kvartalsvis med riskkommittén.",
-    "tag.fact": "Hårt faktum",
+    "tag.fact": "Laddat dokumentfaktum",
     "tag.interpretation": "Tolkning",
 
     "sec3.kicker": "Avsnitt 03 · Riskgränser",

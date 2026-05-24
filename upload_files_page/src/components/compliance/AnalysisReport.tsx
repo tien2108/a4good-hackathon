@@ -28,28 +28,34 @@ const tierMeta: Record<
   { color: string; ring: string; chipBg: string; icon: typeof Info }
 > = {
   unacceptable: {
-    color: "text-destructive",
-    ring: "ring-destructive/30",
-    chipBg: "bg-destructive/10",
+    color: "text-red-500",
+    ring: "ring-red-500/30",
+    chipBg: "bg-red-500/10",
     icon: AlertOctagon,
   },
   high: {
-    color: "text-[color:var(--amber-foreground)]",
-    ring: "ring-[color:var(--amber)]/40",
-    chipBg: "bg-[color:var(--amber)]/20",
+    color: "text-orange-500",
+    ring: "ring-orange-500/30",
+    chipBg: "bg-orange-500/10",
     icon: AlertTriangle,
   },
   limited: {
-    color: "text-[color:var(--brand-via)]",
-    ring: "ring-[color:var(--brand-via)]/30",
-    chipBg: "bg-[color:var(--brand-via)]/10",
+    color: "text-yellow-500",
+    ring: "ring-yellow-500/30",
+    chipBg: "bg-yellow-500/10",
     icon: Info,
   },
   minimal: {
-    color: "text-[color:var(--emerald)]",
-    ring: "ring-[color:var(--emerald)]/30",
-    chipBg: "bg-[color:var(--emerald)]/15",
+    color: "text-green-500",
+    ring: "ring-green-500/30",
+    chipBg: "bg-green-500/10",
     icon: CheckCircle2,
+  },
+  out_of_scope: {
+    color: "text-zinc-100 dark:text-white",
+    ring: "ring-zinc-400/30",
+    chipBg: "bg-zinc-100/10 dark:bg-white/10",
+    icon: HelpCircle,
   },
 };
 

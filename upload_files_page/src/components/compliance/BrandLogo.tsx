@@ -10,7 +10,7 @@ export function BrandLogo({ className = "" }: { className?: string }) {
       </div>
       <div className="flex flex-col leading-none">
         <span className="text-[15px] font-semibold tracking-tight text-gradient-brand">
-          TBD Product
+          Norrin Ipsum
         </span>
         <span className="mt-0.5 text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
           {t("brand.tagline")}
