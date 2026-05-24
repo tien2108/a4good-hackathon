@@ -1,0 +1,185 @@
+{
+	"status": "success",
+	"validation": {
+		"can_classify": true,
+		"avg_extraction_confidence": 0.75,
+		"missing_fields": [],
+		"low_confidence_fields": [
+			{
+				"field": "use of GPAI",
+				"confidence": 0.0,
+				"value": "GPAI is not explicitly mentioned in the document"
+			}
+		],
+		"steps_at_risk": { "step_7": ["use of GPAI"], "step_8": ["use of GPAI"] },
+		"warning": "Classification may be unreliable due to missing or low-confidence fields."
+	},
+	"extracted_fields": {
+		"purpose": {
+			"value": "predictive maintenance",
+			"evidence": "Predictive maintenance at its core is a process for these companies to not only minimize downtime but to improve their efficiency and productivity.",
+			"confidence": 0.9
+		},
+		"users": {
+			"value": "users",
+			"evidence": "The customer now understands the steps necessary to build accurate predictive maintenance models for their fleet of industrial machinery.",
+			"confidence": 0.7
+		},
+		"affected persons": {
+			"value": "machine operators, maintenance personnel",
+			"evidence": "Any company which operates or sells heavy machinery like mining equipment can benefit greatly by having some way to predict when these machines will fail.",
+			"confidence": 0.7
+		},
+		"sector": {
+			"value": "Manufacturing",
+			"evidence": "The customer needed to understand if measurements of engine pressure and temperature at various points in the engine and exhaust system could distinguish between different types of leaks and cooling system failures – and accurately predict how much time was left before the leak or part would need to be repaired. Many large industrial engines have two semi-independent sides to the engine. While these sides may have temperature and pressure fluctuations throughout the day, each side should remain in sync with the other.",
+			"confidence": 0.7
+		},
+		"input data": {
+			"value": "engine pressure and temperature at various points in the engine and exhaust system",
+			"evidence": "The customer needed to understand if measurements of engine pressure and temperature at various points in the engine and exhaust system could distinguish between different types of leaks and cooling system failures – and accurately predict how much time was left before the leak or part would need to be repaired.",
+			"confidence": 1.0
+		},
+		"outputs": {
+			"value": "Predictive Maintenance",
+			"evidence": "Predictive Maintenance Modeling for Industrial Machinery",
+			"confidence": 1.0
+		},
+		"automation level": {
+			"value": "high",
+			"evidence": "The document states that the model was performing better than random guessing, and that the customer now understands the steps necessary to build accurate predictive maintenance models.",
+			"confidence": 0.7
+		},
+		"human oversight": {
+			"value": "human oversight is required for accurate and consistent training labels",
+			"evidence": "When a model isn’t improving, it is often essential to take a step back and ask ourselves if the information we are asking the model to learn from is as representative as it possibly can be.",
+			"confidence": 0.7
+		},
+		"deployment context": {
+			"value": "construction and mining equipment manufacturing",
+			"evidence": "This predictive maintenance project for an industry leader in construction and mining equipment manufacturing involved a dynamic and collaborative approach with the customer to understand the trends Mosaic saw in the data, and what it means for a failure to be on the horizon.",
+			"confidence": 0.9
+		},
+		"use of AI-generated content": {
+			"value": "AI-generated content is used for predictive maintenance",
+			"evidence": "The document mentions that Mosaic designed and deployed custom deep learning models to test the concept of predictive maintenance, and that the models would continuously monitor engine behavior to ensure smooth operation and predict engine failure in advance.",
+			"confidence": 0.7
+		},
+		"use of GPAI": {
+			"value": "GPAI is not explicitly mentioned in the document",
+			"evidence": "The document discusses AI and machine learning, but does not specifically mention GPAI",
+			"confidence": 0.0
+		},
+		"possible impact on people": {
+			"value": "Predictive maintenance can help improve machine or service degradation.",
+			"evidence": "Deep learning can be a powerful technique for predictive maintenance due to its innate ability to identify complex patterns in scenarios involving large, complex datasets containing multiple types of data. Ultimately, applying deep learning to predictive maintenance can help improve machine or service degradation.",
+			"confidence": 1.0
+		}
+	},
+	"classification": {
+		"risk_level": "LIMITED RISK",
+		"articles": ["Article 50", "Article 99.4g"],
+		"description": "Your system is classified as Limited Risk under Article 50. Transparency obligations apply — the system must disclose its AI nature to users. Fine details in Article 99.4g.",
+		"overall_confidence": 0.88,
+		"weakest_link_confidence": 0.7,
+		"overall_confidence_label": "HIGH",
+		"classification_certainty": {
+			"score": 0.8,
+			"label": "HIGH",
+			"explanation": "Classification is well-supported by the document.",
+			"weak_steps": []
+		},
+		"needs_human_review": false,
+		"reasoning_trace": [
+			{
+				"step": "step_1",
+				"question": "Is the AI system in scope of the EU AI Act based on Article 2? (i.e. placed on EU market, used in EU, or output used in EU — excluding military, national security, personal non-professional use, or pure R&D)",
+				"answer": "yes",
+				"confidence": 0.7,
+				"confidence_label": "HIGH",
+				"justification": "Based on Article 2: The AI Act applies to Providers placing AI systems on the EU market, and Deployers of AI systems located in the EU. The deployment context of the AI system is in the EU (construction and mining equipment manufacturing), which matches the scope of the Act. The sector is Manufacturing, which is not explicitly excluded, and the deployment context is not for military, national security, personal non-professional use, or pure R&D.",
+				"fact_texts": [
+					{
+						"sector": "The customer needed to understand if measurements of engine pressure and temperature at various points in the engine and exhaust system could distinguish between different types of leaks and cooling system failures – and accurately predict how much time was left before the leak or part would need to be repaired. Many large industrial engines have two semi-independent sides to the engine. While these sides may have temperature and pressure fluctuations throughout the day, each side should remain in sync with the other."
+					},
+					{
+						"deployment context": "This predictive maintenance project for an industry leader in construction and mining equipment manufacturing involved a dynamic and collaborative approach with the customer to understand the trends Mosaic saw in the data, and what it means for a failure to be on the horizon."
+					}
+				]
+			},
+			{
+				"step": "step_2",
+				"question": "Does any condition in Article 25.1 apply? (i.e. the deployer places the system under their own name/trademark, makes a substantial modification, or changes the intended purpose to make it high-risk)",
+				"answer": "no",
+				"confidence": 1.0,
+				"confidence_label": "HIGH",
+				"justification": "Based on Article 25.1: There is no information that the deployer places the AI system under their own name or trademark, makes a substantial modification, or changes the intended purpose to make it high-risk.",
+				"fact_texts": [
+					{
+						"users": "The customer now understands the steps necessary to build accurate predictive maintenance models for their fleet of industrial machinery."
+					},
+					{
+						"affected persons": "Any company which operates or sells heavy machinery like mining equipment can benefit greatly by having some way to predict when these machines will fail."
+					}
+				]
+			},
+			{
+				"step": "step_3",
+				"question": "Is the system prohibited under Article 5? (subliminal manipulation, exploitation of vulnerabilities, biometric categorisation of sensitive attributes, real-time biometric ID in public spaces, social scoring, criminal risk profiling, emotion recognition at work/school, untargeted facial scraping)",
+				"answer": "no",
+				"confidence": 1.0,
+				"confidence_label": "HIGH",
+				"justification": "Based on Article 5: The following AI systems are prohibited: ...",
+				"fact_texts": [
+					{
+						"purpose": "Predictive maintenance at its core is a process for these companies to not only minimize downtime but to improve their efficiency and productivity."
+					},
+					{
+						"sector": "The customer needed to understand if measurements of engine pressure and temperature at various points in the engine and exhaust system could distinguish between different types of leaks and cooling system failures – and accurately predict how much time was left before the leak or part would need to be repaired. Many large industrial engines have two semi-independent sides to the engine. While these sides may have temperature and pressure fluctuations throughout the day, each side should remain in sync with the other."
+					},
+					{
+						"outputs": "Predictive Maintenance Modeling for Industrial Machinery"
+					}
+				]
+			},
+			{
+				"step": "step_4",
+				"question": "Is the system high-risk based on Article 6.1? (biometrics, critical infrastructure, education, employment, essential services, law enforcement, migration, administration of justice)",
+				"answer": "no",
+				"confidence": 1.0,
+				"confidence_label": "HIGH",
+				"justification": "Based on Article 6.1: None of the categories listed in Article 6.1 match the system's purpose of predictive maintenance in the manufacturing sector.",
+				"fact_texts": [
+					{
+						"purpose": "Predictive maintenance at its core is a process for these companies to not only minimize downtime but to improve their efficiency and productivity."
+					},
+					{
+						"sector": "The customer needed to understand if measurements of engine pressure and temperature at various points in the engine and exhaust system could distinguish between different types of leaks and cooling system failures – and accurately predict how much time was left before the leak or part would need to be repaired. Many large industrial engines have two semi-independent sides to the engine. While these sides may have temperature and pressure fluctuations throughout the day, each side should remain in sync with the other."
+					},
+					{
+						"outputs": "Predictive Maintenance Modeling for Industrial Machinery"
+					},
+					{
+						"users": "The customer now understands the steps necessary to build accurate predictive maintenance models for their fleet of industrial machinery."
+					}
+				]
+			},
+			{
+				"step": "step_6",
+				"question": "Does the system fall into any AI system described in Article 50? (chatbot, synthetic content generation, emotion recognition, biometric categorisation — requiring transparency disclosures)",
+				"answer": "yes",
+				"confidence": 0.7,
+				"confidence_label": "HIGH",
+				"justification": "Based on Article 50: A system generating synthetic audio, image, video, or text (deepfakes) - Although the facts do not explicitly state the type of synthetic content, the use of AI-generated content for predictive maintenance strongly implies the generation of synthetic content, which is a criterion for Article 50.",
+				"fact_texts": [
+					{
+						"outputs": "Predictive Maintenance Modeling for Industrial Machinery"
+					},
+					{
+						"use of AI-generated content": "The document mentions that Mosaic designed and deployed custom deep learning models to test the concept of predictive maintenance, and that the models would continuously monitor engine behavior to ensure smooth operation and predict engine failure in advance."
+					}
+				]
+			}
+		]
+	}
+}

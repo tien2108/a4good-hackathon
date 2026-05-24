@@ -7,7 +7,7 @@ export class AssumptionsCheckerAgent extends BaseAgent {
   }
 
   public async receive(message: AgentMessage): Promise<void> {
-    const { sessionId } = message.data || {};
+    const { sessionId, downstreamDecisions } = message.data || {};
 
     if (message.type === "CHECK_ASSUMPTIONS") {
       this.log(`Received CHECK_ASSUMPTIONS. Starting deep semantic comparison between Input Parser Key Facts and Judge Of Governance analysis...`, { sessionId });
@@ -15,6 +15,26 @@ export class AssumptionsCheckerAgent extends BaseAgent {
       const session = this.bus.getOrCreateSession(sessionId);
       const facts = session.proposalFacts || {};
       const gov = session.governanceData || {};
+
+      const isOutOfScope = 
+        (session.riskClassification && session.riskClassification.toLowerCase().includes("out of scope")) ||
+        (gov.documentation && String(gov.documentation).includes("not an ai system"));
+
+      if (isOutOfScope) {
+        this.log(`🟢 System is Out of Scope / Exempted from EU AI Act. Returning empty assumptions list and exiting early.`, { sessionId });
+        this.bus.updateSession(sessionId, (s) => {
+          s.assumptions = [];
+        });
+        this.send("AgentBus", "ASSUMPTIONS_REPORT", "Assumptions analysis complete - Out of Scope", { 
+          sessionId, 
+          assumptions: [] 
+        });
+        return;
+      }
+
+      // Get downstream decisions from either message data or session
+      const decisions = downstreamDecisions || session.downstreamDecisions || {};
+      this.log(`Applying trace-driven decisions to Assumptions Check: Strictness=${decisions.strictnessLevel || "STANDARD"}, Guidelines="${decisions.assumptionGuidelines || "Evaluate general deployment assumptions."}"`, { sessionId });
 
       this.log(`Extracting and evaluating compliance assumptions across 7 domains...`, { sessionId });
 
@@ -43,6 +63,11 @@ export class AssumptionsCheckerAgent extends BaseAgent {
 
       // Filter out any empty results and format them beautifully
       const compiledAssumptions = assumptions.filter(a => a.trim().length > 0);
+
+      // Dynamically append the trace-driven assumption formulated by Judge of Governance
+      if (decisions.assumptionGuidelines) {
+        compiledAssumptions.push(`[ASSUMPTION] Governance Alignment: Under ${decisions.strictnessLevel} strictness level, our specialized audit focus on "${decisions.targetAuditFocus}" demands precise operational safeguards: "${decisions.assumptionGuidelines}". The system's deployment plan assumes the current baseline organizational controls perfectly satisfy these heightened obligations, which must be verified during pre-market validation.`);
+      }
 
       this.bus.updateSession(sessionId, (s) => {
         s.assumptions = compiledAssumptions;

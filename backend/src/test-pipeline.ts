@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { AgentBus } from "./agents/AgentBus.js";
 import { InputParserAgent } from "./agents/InputParserAgent.js";
 import { DecisionTreeAgent } from "./agents/DecisionTreeAgent.js";
@@ -46,11 +47,23 @@ async function runTest() {
     data: { sessionId, scenario: "Scenario_Complete" },
   });
 
-  // Wait for the pipeline to finish
+  // Wait for the pipeline to finish by polling the session status
   console.log("Waiting for agents to process...");
-  await new Promise(resolve => setTimeout(resolve, 8000));
+  let session = bus.getOrCreateSession(sessionId);
+  const maxWaitTime = 25000; // 25 seconds
+  const pollInterval = 1000; // 1 second
+  let elapsed = 0;
 
-  const session = bus.getOrCreateSession(sessionId);
+  while (
+    session.status !== "COMPLETED_SUCCESS" &&
+    session.status !== "COMPLETED_WITH_GAPS" &&
+    session.status !== "AWAITING_USER_UPLOAD" &&
+    elapsed < maxWaitTime
+  ) {
+    await new Promise(resolve => setTimeout(resolve, pollInterval));
+    elapsed += pollInterval;
+    session = bus.getOrCreateSession(sessionId);
+  }
   console.log("\n=== TEST RESULTS ===");
   console.log("Status:", session.status);
   console.log("Gaps Count:", session.gaps?.length);

@@ -7,7 +7,7 @@ export class PreventionOfConfidenceAgent extends BaseAgent {
   }
 
   public async receive(message: AgentMessage): Promise<void> {
-    const { sessionId } = message.data || {};
+    const { sessionId, downstreamDecisions } = message.data || {};
 
     if (message.type === "GAPS_LIST") {
       this.log(`Received compliance assessment gaps list. Converging data...`, { sessionId });
@@ -18,10 +18,22 @@ export class PreventionOfConfidenceAgent extends BaseAgent {
         const gaps = session.gaps || [];
         const assumptions = session.assumptions || [];
         const facts = session.proposalFacts || {};
+        const decisions = downstreamDecisions || session.downstreamDecisions || {};
+
+        const riskClass = session.riskClassification || "";
+        const isOutOfScope = riskClass.toLowerCase().includes("out of scope") || 
+                            riskClass.toLowerCase().includes("exempted") ||
+                            (session.governanceData?.documentation && String(session.governanceData.documentation).includes("not an ai system"));
 
         this.log(`Starting risk convergence calculations on ${gaps.length} gaps and ${assumptions.length} assumptions...`, { sessionId });
 
-        const preventionReport = this.generatePreventionReport(gaps, assumptions, facts);
+        let preventionReport = "";
+        if (isOutOfScope) {
+          this.log(`🟢 Generating scientific/academic out-of-scope exemption report.`, { sessionId });
+          preventionReport = this.generateExemptionReport(facts);
+        } else {
+          preventionReport = this.generatePreventionReport(gaps, assumptions, facts);
+        }
 
         this.bus.updateSession(sessionId, (s) => {
           s.preventionOutput = preventionReport;
@@ -30,7 +42,8 @@ export class PreventionOfConfidenceAgent extends BaseAgent {
         this.log(`Risk Convergence Complete. Final report generated. Sending to HumanizerUiDisplay backend adapter.`, { sessionId });
         this.send("HumanizerUiDisplay", "PREVENTION_REPORT", "Convergence complete", { 
           sessionId, 
-          preventionReport 
+          preventionReport,
+          downstreamDecisions: decisions
         });
       }, 500);
     }
@@ -166,6 +179,42 @@ export class PreventionOfConfidenceAgent extends BaseAgent {
   </div>
 </div>\n\n`;
     }
+
+    return report;
+  }
+
+  /**
+   * Generates a scientific/academic exemption report under Article 2 of the EU AI Act.
+   */
+  private generateExemptionReport(facts: ProposalFacts): string {
+    const purpose = this.getFact(facts.purpose, "purely scientific or mathematical model");
+    const sector = this.getFact(facts.sector, "Mathematics / Academic research");
+
+    let report = `### 🟢 EU AI ACT: EXEMPTED / NOT IN SCOPE REPORT\n\n`;
+    report += `🟢 **CONFIDENCE STATUS**: NOT IN SCOPE (EXEMPTED FROM EU AI ACT)\n\n`;
+    report += `#### 📋 Scope Exemption Explanation:\n`;
+    report += `The proposed tool/system **"${purpose}"** classified under **"${sector}"** is verified as **outside the scope of the EU AI Act**. Under Article 2 of the Act, certain applications are completely excluded from compliance obligations, including systems used solely for scientific research and development, purely mathematical models, or non-commercial research activities.\n\n`;
+    
+    report += `#### ⚖️ Regulatory Reference and Citations:\n`;
+    report += `1. *Article 2.6 (Research & Development Exemption)*: The provisions of the EU AI Act do not apply to AI systems (or models) specifically developed and put into service for the sole purpose of scientific research and development.\n`;
+    report += `2. *Non-AI Classification Exemption*: Standard mathematical formulas, non-adaptive algorithms, or academic research scripts do not meet the legal definition of an "AI System" under Article 3(1) of the EU AI Act (which requires an element of adaptivity, machine-learning, or logic/knowledge-based decision inference affecting human environments).\n\n`;
+
+    report += `#### 🎓 Academic/Research Best Practices Guidelines:\n`;
+    report += `While the EU AI Act does not legally impose obligations on this system, we recommend adhering to the following voluntary best practices to ensure research integrity, safety, and model security:\n`;
+    report += `1. **Algorithm Transparency**: Document the underlying mathematical proofs, datasets, and boundary conditions to support scientific reproducibility and peer review.\n`;
+    report += `2. **Ethical Scientific Data Handling**: Ensure that any scientific, mathematical, or clinical research data utilized is fully anonymized and compliant with institutional research board (IRB) ethics policies.\n`;
+    report += `3. **Voluntary Verification**: If this model is integrated into a commercial product or diagnostic device in the future, perform a formal re-assessment as it may lose its research exemption and trigger High-Risk requirements under Article 6.\n\n`;
+
+    report += `\n---\n\n`;
+    report += `### 📂 COMPLIANCE EXEMPTION STATE (HOVER TO REVEAL DETAILS)\n\n`;
+
+    // Exemption Details Hover Card
+    report += `<div class="hover-details-wrapper" style="border-color: var(--color-success);">
+  <div class="hover-details-trigger" style="color: var(--color-success); font-weight: 600;">🎉 Position mouse here to view official EU AI Act Article 2 Exemption Details...</div>
+  <div class="hover-details-content">
+    <p style="color: var(--text-secondary); margin: 0; line-height: 1.5;">This model is officially categorized as an **Academic / Scientific Research Exemption** under the EU AI Act Article 2.6. No pre-market conformity assessment, CE-marking, or registration in the EU Database is required.</p>
+  </div>
+</div>\n\n`;
 
     return report;
   }

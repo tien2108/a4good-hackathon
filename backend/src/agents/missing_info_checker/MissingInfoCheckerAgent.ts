@@ -19,7 +19,7 @@ export class MissingInfoCheckerAgent extends BaseAgent {
   }
 
   public async receive(message: AgentMessage): Promise<void> {
-    const { sessionId, scenario } = message.data || {};
+    const { sessionId, scenario, downstreamDecisions } = message.data || {};
 
     if (message.type === "CHECK_MISSING_INFO") {
       this.log(`Reviewing JudgeOfGovernance JSON for required compliance parameters...`, { sessionId });
@@ -27,6 +27,10 @@ export class MissingInfoCheckerAgent extends BaseAgent {
 
       const session = this.bus.getOrCreateSession(sessionId);
       const govData = session.governanceData || {};
+
+      // Get downstream decisions from either message data or session
+      const decisions = downstreamDecisions || session.downstreamDecisions || {};
+      this.log(`Applying trace-driven governance checks under strictness level: ${decisions.strictnessLevel || "STANDARD"}`, { sessionId });
 
       // 1. Identify which mandated fields are missing
       const missing = this.requiredFields.filter((field) => {
@@ -46,7 +50,7 @@ export class MissingInfoCheckerAgent extends BaseAgent {
         });
         
         // Trigger both Assumptions check and send empty gaps to PreventionOfConfidence
-        this.triggerConvergence(sessionId, []);
+        this.triggerConvergence(sessionId, [], decisions);
       } 
       
       else {
@@ -62,7 +66,8 @@ export class MissingInfoCheckerAgent extends BaseAgent {
           this.send("InputParser", "RERUN_COMMAND", `Extract details for missing fields: ${missing.join(", ")}`, { 
             sessionId, 
             scenario, 
-            missingFields: missing 
+            missingFields: missing,
+            downstreamDecisions: decisions
           });
         } 
         
@@ -72,7 +77,7 @@ export class MissingInfoCheckerAgent extends BaseAgent {
           // Instead, we proceed to produce gaps and transition.
           if (session.uploadedDocs.length > 0) {
             this.log(`Attempt 2 (user upload) still left missing fields: [${missing.join(", ")}]. Proceeding to generate gaps.`, { sessionId });
-            this.produceGapsAndProceed(sessionId, missing);
+            this.produceGapsAndProceed(sessionId, missing, decisions);
           } else {
             this.log(`Attempt 2 failed. Rerun did not resolve gaps. Shifting status to prompt user upload.`, { sessionId });
             this.bus.updateSessionStatus(sessionId, "AWAITING_USER_UPLOAD");
@@ -80,6 +85,7 @@ export class MissingInfoCheckerAgent extends BaseAgent {
             this.send("User", "PROMPT_USER_UPLOAD", `Compliance check is missing critical info: ${missing.join(", ")}. Please upload supplementary documents.`, {
               sessionId,
               missingFields: missing,
+              downstreamDecisions: decisions
             });
           }
         }
@@ -89,17 +95,19 @@ export class MissingInfoCheckerAgent extends BaseAgent {
     // User interacted: either uploaded new information or skipped
     else if (message.type === "USER_UPLOADED_INFO") {
       const { skipped, files } = message.data || {};
+      const session = this.bus.getOrCreateSession(sessionId);
+      const decisions = session.downstreamDecisions || {};
 
       if (skipped) {
         this.log(`User elected to SKIP uploading additional documents. Generating assessment gaps list.`, { sessionId });
-        const missing = this.bus.getOrCreateSession(sessionId).missingFields;
-        this.produceGapsAndProceed(sessionId, missing);
+        const missing = session.missingFields;
+        this.produceGapsAndProceed(sessionId, missing, decisions);
       } 
       
       else if (files && files.length > 0) {
         this.log(`User uploaded ${files.length} supplementary documents: [${files.join(", ")}]. Rerunning parser...`, { sessionId });
         this.bus.updateSession(sessionId, (s) => {
-          s.uploadedDocs = [...s.uploadedDocs, ...files];
+          s.uploadedDocs = Array.from(new Set([...(s.uploadedDocs || []), ...files]));
           // We keep attemptCount = 1, but we trigger the pipeline rerun
         });
 
@@ -107,7 +115,8 @@ export class MissingInfoCheckerAgent extends BaseAgent {
         this.send("InputParser", "START", "Parsing with newly uploaded supplementary files", { 
           sessionId, 
           scenario,
-          uploadedFiles: files 
+          uploadedFiles: files,
+          downstreamDecisions: decisions
         });
       }
     }
@@ -116,7 +125,7 @@ export class MissingInfoCheckerAgent extends BaseAgent {
   /**
    * Helper to generate a text list of gaps and trigger convergence
    */
-  private produceGapsAndProceed(sessionId: string, missingFields: string[]): void {
+  private produceGapsAndProceed(sessionId: string, missingFields: string[], downstreamDecisions: any): void {
     const session = this.bus.getOrCreateSession(sessionId);
     
     // Generate text descriptions of the gaps
@@ -130,22 +139,26 @@ export class MissingInfoCheckerAgent extends BaseAgent {
     });
 
     this.log(`Generated assessment gaps list containing ${gapsList.length} compliance warnings. Triggering convergence.`, { sessionId });
-    this.triggerConvergence(sessionId, gapsList);
+    this.triggerConvergence(sessionId, gapsList, downstreamDecisions);
   }
 
   /**
    * Run the next stages of the pipeline: Trigger Assumptions Checker and send gaps to Prevention of Confidence
    */
-  private triggerConvergence(sessionId: string, gapsList: string[]): void {
+  private triggerConvergence(sessionId: string, gapsList: string[], downstreamDecisions: any): void {
     this.bus.updateSessionStatus(sessionId, "CONVERGING");
 
     // 1. Trigger the Assumptions Checker agent in parallel
-    this.send("AssumptionsChecker", "CHECK_ASSUMPTIONS", "Verify proposal assumptions", { sessionId });
+    this.send("AssumptionsChecker", "CHECK_ASSUMPTIONS", "Verify proposal assumptions", { 
+      sessionId,
+      downstreamDecisions
+    });
 
     // 2. Direct our gaps output list to the Prevention of Confidence agent
     this.send("PreventionOfConfidence", "GAPS_LIST", "Deliver assessment gaps list", { 
       sessionId, 
-      gaps: gapsList 
+      gaps: gapsList,
+      downstreamDecisions
     });
   }
 }

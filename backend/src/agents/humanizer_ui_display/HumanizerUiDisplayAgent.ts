@@ -15,13 +15,14 @@ export class HumanizerUiDisplayAgent extends BaseAgent {
   }
 
   public async receive(message: AgentMessage): Promise<void> {
-    const { sessionId } = message.data || {};
+    const { sessionId, downstreamDecisions } = message.data || {};
 
     if (message.type === "PREVENTION_REPORT") {
       this.log(`Received risk convergence report. Formatting humanized summary and compiling PDF/PPTX report assets...`, { sessionId });
 
       const session = this.bus.getOrCreateSession(sessionId);
       const gapsCount = session.gaps?.length || 0;
+      const decisions = downstreamDecisions || session.downstreamDecisions || {};
 
       // Compile a gorgeous dashboard summary payload
       const humanizedSummary = {
@@ -42,13 +43,19 @@ export class HumanizerUiDisplayAgent extends BaseAgent {
         finalReportMarkdown: session.preventionOutput,
         timestamp: new Date().toLocaleTimeString(),
         pdfUrl: `/exports/report-${sessionId}.pdf`,
-        pptxUrl: `/exports/briefing-${sessionId}.pptx`
+        pptxUrl: `/exports/briefing-${sessionId}.pptx`,
+        downstreamDecisions: {
+          strictnessLevel: decisions.strictnessLevel || "STANDARD",
+          targetAuditFocus: decisions.targetAuditFocus || "General AI System",
+          humanizerStyleHint: decisions.humanizerStyleHint || "Standard Professional Audit Layout"
+        }
       };
 
       // 1. Save results to the session state IMMEDIATELY so the Lovable UI updates instantly!
       this.bus.updateSession(sessionId, (s) => {
         s.humanizedSummary = humanizedSummary;
         s.status = gapsCount === 0 ? "COMPLETED_SUCCESS" : "COMPLETED_WITH_GAPS";
+        s.downstreamDecisions = decisions; // backup
       });
 
       this.log(`🎉 COMPLIANCE CHECK PIPELINE FULLY CONCLUDED. Display payload stored. Status: ${gapsCount === 0 ? "COMPLETED_SUCCESS" : "COMPLETED_WITH_GAPS"}`, { sessionId });
@@ -110,23 +117,37 @@ export class HumanizerUiDisplayAgent extends BaseAgent {
         const writeStream = fs.createWriteStream(pdfPath);
         doc.pipe(writeStream);
 
-        // Header Banner (Corporate aesthetic)
-        doc.rect(0, 0, 612, 100).fill("#1A365D");
+        const downstreamDecisions = session.downstreamDecisions || {};
+        const strictness = downstreamDecisions.strictnessLevel || "STANDARD";
+        
+        let primaryColor = "#1A365D"; // Default Corporate Blue
+        if (strictness === "EXTREME_CLINICAL") {
+          primaryColor = "#0F766E"; // Clinical teal
+        } else if (strictness === "HIGH_HR") {
+          primaryColor = "#4338CA"; // HR Indigo
+        } else if (strictness === "LIGHT_TRANSPARENCY") {
+          primaryColor = "#0369A1"; // Light blue
+        }
+
+        // Header Banner (Dynamic premium color scheme)
+        doc.rect(0, 0, 612, 100).fill(primaryColor);
         doc.fontSize(22).fillColor("#FFFFFF").font("Helvetica-Bold").text("EU AI Act Compliance Audit Report", 50, 40);
-        doc.font("Helvetica").fontSize(10).fillColor("#E2E8F0").text(`Automated pipeline output | Timestamp: ${new Date().toLocaleString()}`, 50, 70);
+        doc.font("Helvetica").fontSize(10).fillColor("#E2E8F0").text(`Style: ${downstreamDecisions.humanizerStyleHint || "Standard Layout"} | Strictness: ${strictness} | Focus: ${downstreamDecisions.targetAuditFocus || "General"}`, 50, 70);
         doc.moveDown(3);
 
         // Session metadata Table
         const score = session.humanizedSummary?.complianceScore ?? 100;
         const status = session.humanizedSummary?.statusLabel ?? "COMPLETE";
-        doc.fontSize(13).fillColor("#1A365D").text("Assessment Metadata", { underline: true });
+        doc.fontSize(13).fillColor(primaryColor).text("Assessment Metadata", { underline: true });
         doc.fontSize(10).fillColor("#2D3748").text(`• Session ID: ${session.sessionId}`);
         doc.fontSize(10).text(`• Compliance Score: ${score}/100`);
         doc.fontSize(10).text(`• Regulatory Status: ${status}`);
+        doc.fontSize(10).text(`• Dynamic Strictness: ${strictness}`);
+        doc.fontSize(10).text(`• Target Audit Focus: ${downstreamDecisions.targetAuditFocus || "General AI System"}`);
         doc.moveDown(1.2);
 
         // Section 1: Facts from Input Parser
-        doc.fontSize(13).fillColor("#1A365D").text("1. Extracted Use-Case Facts (Source: Input Parser Agent)", { underline: true });
+        doc.fontSize(13).fillColor(primaryColor).text("1. Extracted Use-Case Facts (Source: Input Parser Agent)", { underline: true });
         doc.moveDown(0.4);
         const facts = session.proposalFacts || {};
         const factsKeys = [
@@ -153,7 +174,7 @@ export class HumanizerUiDisplayAgent extends BaseAgent {
         doc.moveDown(1.2);
 
         // Section 2: Decision Tree Classifications & Citations
-        doc.fontSize(13).fillColor("#1A365D").text("2. EU AI Act Path Classifications & Citations (Source: Decision Tree)", { underline: true });
+        doc.fontSize(13).fillColor(primaryColor).text("2. EU AI Act Path Classifications & Citations (Source: Decision Tree)", { underline: true });
         doc.moveDown(0.4);
         if (session.riskClassification) {
           const lines = session.riskClassification.split("\n");
@@ -161,7 +182,7 @@ export class HumanizerUiDisplayAgent extends BaseAgent {
             if (line.trim().startsWith("-")) {
               doc.fontSize(9).fillColor("#2C5282").text(line.trim(), { indent: 15 });
             } else if (line.trim().startsWith("**")) {
-              doc.fontSize(10).fillColor("#1A365D").font("Helvetica-Bold").text(line.replace(/\*\*/g, "").trim()).font("Helvetica");
+              doc.fontSize(10).fillColor(primaryColor).font("Helvetica-Bold").text(line.replace(/\*\*/g, "").trim()).font("Helvetica");
             } else {
               doc.fontSize(10).fillColor("#2D3748").text(line.trim());
             }
@@ -173,7 +194,7 @@ export class HumanizerUiDisplayAgent extends BaseAgent {
         doc.moveDown(1.2);
 
         // Section 3: Governance observations
-        doc.fontSize(13).fillColor("#1A365D").text("3. Deduced Governance Observations (Source: Judge of Governance)", { underline: true });
+        doc.fontSize(13).fillColor(primaryColor).text("3. Deduced Governance Observations (Source: Judge of Governance)", { underline: true });
         doc.moveDown(0.4);
         const gov = session.governanceData || {};
         const govKeys = [
@@ -197,7 +218,7 @@ export class HumanizerUiDisplayAgent extends BaseAgent {
         doc.moveDown(1.2);
 
         // Section 4: Gaps and Assumptions Checkers
-        doc.fontSize(13).fillColor("#1A365D").text("4. Risk Boundaries: Assumptions & Gaps Checkers", { underline: true });
+        doc.fontSize(13).fillColor(primaryColor).text("4. Risk Boundaries: Assumptions & Gaps Checkers", { underline: true });
         doc.moveDown(0.4);
 
         doc.fontSize(10).fillColor("#2D3748").font("Helvetica-Bold").text("Operational & Technical Assumptions Checked:").font("Helvetica");
@@ -225,7 +246,7 @@ export class HumanizerUiDisplayAgent extends BaseAgent {
         doc.moveDown(1.2);
 
         // Section 5: Prevention of confidence
-        doc.fontSize(13).fillColor("#1A365D").text("5. Confidence Prevention & Auditing Queries (Prevention of Confidence Agent)", { underline: true });
+        doc.fontSize(13).fillColor(primaryColor).text("5. Confidence Prevention & Auditing Queries (Prevention of Confidence Agent)", { underline: true });
         doc.moveDown(0.4);
         if (session.preventionOutput) {
           const lines = session.preventionOutput.split("\n");
@@ -233,7 +254,7 @@ export class HumanizerUiDisplayAgent extends BaseAgent {
           lines.forEach((line: string) => {
             if (line.includes("Expert Questions") || line.includes("Supervisory Questions") || line.includes("Audit Questions")) {
               isQuestions = true;
-              doc.fontSize(10).fillColor("#1A365D").font("Helvetica-Bold").text("AI Compliance Expert Auditing Queries:").font("Helvetica");
+              doc.fontSize(10).fillColor(primaryColor).font("Helvetica-Bold").text("AI Compliance Expert Auditing Queries:").font("Helvetica");
               doc.moveDown(0.2);
               return;
             }
@@ -267,24 +288,36 @@ export class HumanizerUiDisplayAgent extends BaseAgent {
     }
     const pptx = new (pptxConstructor as any)();
 
+    const downstreamDecisions = session.downstreamDecisions || {};
+    const strictness = downstreamDecisions.strictnessLevel || "STANDARD";
+    
+    let pptxBgColor = "1A365D"; // Default Corporate Blue
+    if (strictness === "EXTREME_CLINICAL") {
+      pptxBgColor = "0F766E"; // Clinical teal
+    } else if (strictness === "HIGH_HR") {
+      pptxBgColor = "4338CA"; // HR Indigo
+    } else if (strictness === "LIGHT_TRANSPARENCY") {
+      pptxBgColor = "0369A1"; // Light blue
+    }
+
     // 1. Title Slide
     const slide1 = pptx.addSlide();
-    slide1.background = { color: "1A365D" };
+    slide1.background = { color: pptxBgColor };
     slide1.addText("EU AI Act Compliance Briefing", {
-      x: 0.5, y: 1.8, w: 9.0, h: 1.0,
+      x: 0.5, y: 1.5, w: 9.0, h: 1.0,
       fontSize: 32, bold: true, color: "FFFFFF", align: "left"
     });
-    slide1.addText(`Multi-Agent Pipeline Audit Outcomes\nScore: ${session.humanizedSummary?.complianceScore ?? 100}/100 | Status: ${session.humanizedSummary?.statusLabel ?? "COMPLETE"}`, {
-      x: 0.5, y: 3.0, w: 9.0, h: 0.8,
-      fontSize: 15, color: "E2E8F0", align: "left"
+    slide1.addText(`Multi-Agent Pipeline Audit Outcomes\nScore: ${session.humanizedSummary?.complianceScore ?? 100}/100 | Status: ${session.humanizedSummary?.statusLabel ?? "COMPLETE"}\nStyle: ${downstreamDecisions.humanizerStyleHint || "Standard layout"} | Focus: ${downstreamDecisions.targetAuditFocus || "General AI"}`, {
+      x: 0.5, y: 2.7, w: 9.0, h: 1.5,
+      fontSize: 14, color: "E2E8F0", align: "left"
     });
-    slide1.addText(`Assessed on: ${new Date().toLocaleDateString()} | Session: ${session.sessionId}`, {
+    slide1.addText(`Assessed on: ${new Date().toLocaleDateString()} | Session: ${session.sessionId} | Strictness: ${strictness}`, {
       x: 0.5, y: 5.2, w: 9.0, h: 0.5,
       fontSize: 11, color: "CBD5E0", align: "left"
     });
 
     const addHeader = (slide: any, title: string) => {
-      slide.addShape("rect", { x: 0.0, y: 0.0, w: "100%", h: 0.8, fill: { color: "1A365D" } });
+      slide.addShape("rect", { x: 0.0, y: 0.0, w: "100%", h: 0.8, fill: { color: pptxBgColor } });
       slide.addText(title, { x: 0.5, y: 0.15, w: 9.0, h: 0.5, fontSize: 18, bold: true, color: "FFFFFF" });
     };
 
